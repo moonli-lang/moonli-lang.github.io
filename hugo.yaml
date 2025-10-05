@@ -185,3 +185,8 @@ module:
   imports:
     - path: github.com/google/docsy
       disable: false
+
+# For github pages
+caches:
+  images:
+    dir: :cacheDir/images
