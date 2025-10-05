@@ -1,5 +1,5 @@
 baseURL: https://moonli-lang.github.io
-title: Welcome to Moonli Programming Language
+title: The Moonli Programming Language
 
 # cSpell:ignore goldmark github hugo readingtime docsy subdir lastmod pygments linenos catmullrom norsk gu
 
@@ -46,18 +46,10 @@ imaging:
 languages:
   en:
     languageName: English
-    title: Welcome to Moonli Programming Language
+    title: The Moonli Programming Language
     params:
-      description: Moonli Programming Language
+      description: Homepage of the Moonli programming language
   # cSpell:disable
-  'no':
-    languageName: Norsk
-    contentDir: content/no
-    title: Gulldoks
-    params:
-      description: Docsy er operativsystem for skyen
-      time_format_default: 02.01.2006
-      time_format_blog: 02.01.2006
   # cSpell:enable
 
 markup:
