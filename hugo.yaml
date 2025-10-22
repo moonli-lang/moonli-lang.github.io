@@ -46,7 +46,7 @@ imaging:
 languages:
   en:
     languageName: English
-    title: The Moonli Programming Language
+    title: Moonli
     params:
       description: Homepage of the Moonli programming language
   # cSpell:disable
@@ -125,7 +125,7 @@ params:
   offlineSearch: false
 
   # Enable syntax highlighting and copy buttons on code blocks with Prism
-  prism_syntax_highlighting: false
+  prism_syntax_highlighting: true
 
   copyright:
     authors: Docsy Authors | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
