@@ -4,6 +4,8 @@ linkTitle: Tutorial
 menu: {main: {weight: 20}}
 ---
 
+# Misc
+
 Moonli follows the idiom \"everything is an expression\". Thus, one does
 not need to worry about statements and expressions.
 
