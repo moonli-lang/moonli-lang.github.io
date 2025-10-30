@@ -159,3 +159,40 @@ MOONLI-USER> boundp($x)
 ```
 
 While it is okay to use `makunbound` in the REPL, it is recommended to avoid using it in the code you write and save in files and share with others. Creation, deletion, re-creation is harder to understand that a single creation. Use local variables wherever possible.
+
+## Variables and Abstraction
+
+Suppose you had a program to multiply `23` with itself thrice. You program would then be a single file with the following single line of code:
+
+```moonli
+print(23 * 23 * 23)
+```
+
+Now, suppose you wanted to change this program to multiply `47` by itself thrice. You'd need to make changes in *three* places. The new code would look like this.
+
+```moonli
+print(47 * 47 * 47)
+```
+
+But, with the use of variables, you can achieve the same with just a single change!
+
+The following program multiples 23 with itself thrice:
+
+```moonli
+let x = 23:
+  print(x * x * x)
+end
+```
+
+It can be changed to multiply 47 with itself thrice by making a single change!
+
+```moonli
+let x = 47:
+  print(x * x * x)
+end
+```
+
+Instead of saying "multiply 23 by itself", now you are saying "multiply x by itself (whatever x may be)". This replacement of something *specific* (23) by something *general* (a variable `x`) is essentially abstraction.
+
+Abstractions can help to keep code simple -- it allows code to be *reused*.
+
