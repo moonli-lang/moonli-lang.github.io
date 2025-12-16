@@ -11,7 +11,13 @@ title: The Moonli Programming Language
 </a>
 {{% blocks/lead color="tertiary" %}}
 
-Moonli is an easy to use interactive programming language powered by battle-tested tools. Its syntax is reminiscent of familiar languages like Python or Julia.
+Moonli is a transpiler
+
+<br/>
+
+Transpile Python or Julia-like *algol-syntax*
+
+=> to an *interactive battle-tested programming language Common Lisp*
 
 {{% /blocks/lead %}}
 
@@ -21,7 +27,7 @@ Moonli is an easy to use interactive programming language powered by battle-test
 
 {{% blocks/lead color="primary" %}}
 
-Under the hood, it relies on a flexible, multiparadigm language [Common Lisp](https://common-lisp.net/), and particularly its optimizing compiler [SBCL](https://www.sbcl.org/).
+Moonli relies on a flexible, multiparadigm language [Common Lisp](https://common-lisp.net/), and particularly its optimizing compiler [SBCL](https://www.sbcl.org/).
 
 {{% /blocks/lead %}}
 
@@ -71,17 +77,26 @@ In particular, each can be redefined in a piecemeal fashion. This makes it best 
 
 {{% /blocks/feature %}}
 
-
 {{% blocks/feature icon="fa fa-none" title="Learning Resources and Features" %}}
 <p style="text-align:justify">
 From the hacker oriented books <a href="https://lispcookbook.github.io/cl-cookbook/">Cookbook</a> and <a href="https://gigamonkeys.com/book/">Practical Common Lisp</a> to <a href="https://www.cs.cmu.edu/~dst/LispBook/book.pdf">beginner</a> <a href="https://paulgraham.com/acl.html?viewfullsite=1">friendly</a> as well as <a href="https://www.paulgraham.com/onlisptext.html">advanced</a> <a href="https://link.springer.com/book/10.1007/978-1-4842-6134-7">and</a> <a href="https://en.wikipedia.org/wiki/The_Art_of_the_Metaobject_Protocol">beyond</a>, there's something for everybody.
 <p>
 {{% /blocks/feature %}}
 
+{{% /blocks/section %}}
+
+{{% blocks/lead color="primary" %}}
+
+Moonli is *just a transpiler*.
+
+{{% /blocks/lead %}}
+
+{{% blocks/section color="light" type="row" %}}
+
 
 {{% blocks/feature icon="fa fa-none" title="Transpile-based" %}}
 <p style="text-align:justify">
-Moonli transpiles to Common Lisp. Your colleague familiar with Python or Julia can read Moonli code, while lispers in the wild can consume the corresponding Common Lisp code.
+Moonli transpiles to Common Lisp. Your colleague familiar with Python or Julia can read Moonli code, while lispers can hack the corresponding Common Lisp code whenever metaprogramming becomes necessary.
 <p>
 {{% /blocks/feature %}}
 
