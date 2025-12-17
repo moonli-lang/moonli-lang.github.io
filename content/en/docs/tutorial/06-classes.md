@@ -292,11 +292,37 @@ end
 
 `:before` methods run before the main methods. `:after` runs after the main methods.
 
+## Metaclasses
+
+One can find the class associated with a symbol using `find-class`:
+
+```moonli
+find-class($string)
+#=> #<built-in-class common-lisp:string>
+
+find-class($rectangle)
+#=> #<standard-class rectangle>
+```
+
+Further, in Moonli (and Common Lisp), one can find the class of the class by using `find-class` followed by `class-of`.
+
+```moonli
+class-of(find-class($string))
+#=> #<standard-class built-in-class>
+
+class-of(find-class($rectangle))
+#=> #<standard-class standard-class>
+```
+
+Class of a class is called a *metaclass*. They define how the class itself behaves. We do not dive into metaclasses in this tutorial. But to note, many Common Lisp implementations (and thus, Moonli) provide what is called a [*Meta-Object Protocol*](https://franz.com/support/documentation/mop/index.html), which can be used to modify the behavior of classes, their instances, and methods and generic functions.
+
+Here, we merely point to the existence of metaclasses. The `built-in-class` is one metaclass and `standard-class` is another. In the [next chapter](07-structures.md), we will dive into objects and classes corresponding to the metaclass `structure-class`. 
+
 ## Summary
 
 Moonli transpiles directly to Common Lisp’s CLOS:
 
-* Methods belong to *generic functions*, not classes—encouraging flexible design.
+* Methods belong to *generic functions*, not classes -- encouraging extensible design.
 * You get full multiple dispatch.
 * Classes and methods can be redefined at the REPL.
 * Multiple inheritance is allowed and sane.
