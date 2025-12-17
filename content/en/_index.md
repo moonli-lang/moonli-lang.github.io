@@ -57,6 +57,32 @@ From <a href="https://www.quicklisp.org/beta/">quicklisp</a> that ensures all pa
 
 {{% /blocks/feature %}}
 
+{{% blocks/feature icon="fa fa-none" title="Foreign Function Interface" %}}
+
+<p style="text-align:justify">
+The years since the ANSI standardization has seen the rise of <a href="https://lispcookbook.github.io/cl-cookbook/ffi.html">foreign function interface</a> that allows most Common Lisp implementations access to C libraries. This includes access to <a href="https://github.com/takagi/cl-cuda">CUDA</a> as well as <a href="https://github.com/digikar99/py4cl2-cffi">Python</a>.
+</p>
+
+{{% /blocks/feature %}}
+
+
+{{% blocks/feature icon="fa fa-none" title="Multithreading" %}}
+
+<p style="text-align:justify">
+<a href="https://sionescu.github.io/bordeaux-threads/">bordeaux-threads</a> and <a href="https://sharplispers.github.io/lparallel/">lparallel</a> provide powerful multithreading APIs common across multiple platforms and implementations.
+</p>
+
+{{% /blocks/feature %}}
+
+
+{{% blocks/feature icon="fa fa-none" title="Multiple Implementations" %}}
+
+<p style="text-align:justify">
+From <a href="https://www.sbcl.org/">SBCL</a> and <a href="https://ccl.clozure.com/">CCL</a> that allow image-based development, to <a href="https://ecl.common-lisp.dev/posts/ECL-2399-release.html">ECL</a> that allows embedding Common Lisp in C applications, to <a href="https://clasp-developers.github.io/">CLASP</a> that interfaces with LLVM, and <a href="https://armedbear.common-lisp.dev/">ABCL</a> that interfaces with JVM, there are multiple implementations to suit everyone's needs.
+</p>
+
+{{% /blocks/feature %}}
+
 
 {{% blocks/feature icon="fa fa-none" title="Optional Typing" %}}
 
