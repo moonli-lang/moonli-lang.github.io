@@ -116,11 +116,11 @@ current directory, or
 
 1.  3.1. Obtain the source
 
-        git clone https://github.com/digikar99/moonli
+        git clone https://github.com/moonli-lang/moonli
 
 2.  3.2. Start the REPL
 
-        sbcl --eval '(asdf:load-system "moonli-repl")' --eval '(cl-repl:main)'
+        sbcl --eval '(asdf:load-system "moonli/repl")' --eval '(cl-repl:main)'
 
 3.  3.3a. (Optional) Building basic binary
 
