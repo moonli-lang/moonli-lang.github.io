@@ -6,8 +6,12 @@ title: The Moonli Programming Language
 <a class="btn btn-lg btn-primary me-3 mb-4" href="/docs/">
   Learn More <i class="fas fa-arrow-alt-circle-right ms-2"></i>
 </a>
+<a class="btn btn-lg btn-primary me-3 mb-4" href="https://github.com/moonli-lang/moonli">
+  Source Code <i class="fab fa-github ms-2"></i>
+</a>
+<br/>
 <a class="btn btn-lg btn-secondary me-3 mb-4" href="https://github.com/moonli-lang/moonli/releases/latest">
-  Download <i class="fab fa-github ms-2 "></i>
+  Download <i class="fas fa-arrow-alt-circle-down ms-2 "></i>
 </a>
 {{% blocks/lead color="tertiary" %}}
 
@@ -149,6 +153,19 @@ Common Lisp and thus, Moonli, is mutable, but can be used in a functional manner
 <p>
 
 {{% /blocks/lead %}}
+
+{{% blocks/section color="light" type="row" %}}
+
+{{% blocks/feature icon="fa fa-none" title="Lisper already?" %}}
+You can skip the tutorial, and directly see <a href="/docs/intro-lisp/">example transpilation snippets</a>.
+{{% /blocks/feature %}}
+
+{{% blocks/feature icon="fa fa-none" title="New to Common Lisp?" %}}
+See the <a href="/docs/tutorial/">tutorial for Moonli</a>!
+{{% /blocks/feature %}}
+
+{{% /blocks/section %}}
+
 
 {{% blocks/section color="dark" type="row" %}}
 

@@ -1,6 +1,7 @@
 ---
 title: Introduction to Moonli for Common Lispers
 linkTitle: Introduction to Moonli for Common Lispers
+weight: 3
 ---
 
 
@@ -8,6 +9,8 @@ linkTitle: Introduction to Moonli for Common Lispers
 ## What
 
 This is a syntax layer that transpiles to Common Lisp.
+
+For example,
 
 ```moonli
 defun sum(args):
@@ -36,33 +39,46 @@ project.
 
 ## Table of Contents
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
 - [What](#what)
 - [Why](#why)
 - [Features](#features)
-  - [For common lispers](#for-common-lispers)
-  - [For programmers in general](#for-programmers-in-general)
+    - [For common lispers](#for-common-lispers)
+    - [For programmers in general](#for-programmers-in-general)
 - [Plan](#plan)
 - [Syntax](#syntax)
-  - [Global variables](#global-variables)
-  - [Local variables](#local-variables)
-  - [Symbols](#symbols)
-  - [Function-like calls](#function-like-calls)
-  - [Functions](#functions)
-  - [Dictionaries or Hash-tables](#dictionaries-or-hash-tables)
-  - [Sets or Hash-sets](#sets-or-hash-sets)
-  - [Infix operators](#infix-operators)
-  - [lm](#lm)
-  - [declaim](#declaim)
-  - [declare](#declare)
-  - [ifelse](#ifelse)
-  - [lambda](#lambda)
-  - [let-plus:let+](#let-pluslet)
-  - [loop](#loop)
-  - [defun](#defun)
-  - [if](#if)
-  - [let](#let)
-  - [for:for](#forfor)
-:::
+    - [Core Syntax](#core-syntax)
+    - [Macros](#macros)
+        - [declaim](#declaim)
+        - [declare](#declare)
+        - [defclass](#defclass)
+        - [defgeneric](#defgeneric)
+        - [defmethod](#defmethod)
+        - [defpackage](#defpackage)
+        - [defparameter](#defparameter)
+        - [defstruct](#defstruct)
+        - [deftype](#deftype)
+        - [defun](#defun)
+        - [defvar](#defvar)
+        - [for](#for)
+        - [if](#if)
+        - [if](#if-1)
+        - [if](#if-2)
+        - [if](#if-3)
+        - [ifelse](#ifelse)
+        - [in-package](#in-package)
+        - [labels](#labels)
+        - [lambda](#lambda)
+        - [let](#let)
+        - [let+](#let)
+        - [lm](#lm)
+        - [loop](#loop)
+        - [time](#time)
+
+<!-- markdown-toc end -->
+
 
 ## Why
 
@@ -110,26 +126,6 @@ macros](https://www.quora.com/What-is-your-favourite-non-mainstream-programming-
 - Returning multiple values without an intermediate data structure
 - Support for rapid prototyping through CLOS and image-based development
 
-Here\'s a brief comparison of features across different languages.
-
-```
-    FEATURES                             MOONLI       COMMON LISP       JULIA       HASKELL         RUST         PYTHON       JAVASCRIPT         C  
-  ----------------------------------- ------------ ----------------- ----------- ------------- -------------- ------------ ---------------- -----------
-  Syntax                                    +              +              +            +            ---             +              -             -
-  Interactivity (Rapid Prototyping)       High         Very High      Moderate        Low           None        Moderate       Moderate        None
-  Typing (Strong/Weak)                   Strong         Strong         Strong       Strong         Strong        Strong          Weak          Weak
-  Typing (Static/Dynamic)               Flexible       Flexible       Flexible      Static         Static       Dynamic        Dynamic        Dynamic
-  Typing (Expressivity)                 Flexible       Flexible       Moderate     Very High     Very High        Low            Low            Low
-  Compiler Speed                        Flexible       Flexible         Slow       Moderate         Slow        Moderate       Moderate      Moderate
-  Runtime Speed                         Flexible       Flexible         Fast       Moderate         Fast          Slow         Moderate        Fast
-  Runtime Error Recovery                Advanced       Advanced        Limited     Moderate         None        Moderate       Moderate        None
-  Binary Size                           Flexible       Flexible         Large          ?           Small          None           None          Small
-  User Extensibility                      High           High         Moderate        Low           Low           None           None          None
-  Compiler built-in optimizations         Low             Low         Very High        ?         Very High        Low          Moderate      Very High
-  Long Term Support                       Low          Very High      Moderate         ?          Moderate      Moderate         Low         Very High
-  Ecosystem (without interop)            Small           Small        Moderate       Small        Moderate       Large          Large          Large
-  Memory Management                       Heap           Heap         Reference      Heap       Compile Time   Reference          ?           Manual
-```
   
 ## Plan
 
@@ -143,7 +139,7 @@ Here\'s a brief comparison of features across different languages.
 - [x] VS Code integration
 - [ ] Emacs mode and integration with slime
 - [x] Infix Logical operators
-- [ ] Add more forms: progn, mvb, dsb, let+, more...
+- [ ] Add more forms: progn, mvb, dsb, more...
 - [ ] Add more tests
 - [ ] Reverse transpile from common lisp
 
@@ -151,7 +147,9 @@ Here\'s a brief comparison of features across different languages.
 
 As with lisp, everything is an expression.
 
-Simple syntax table:
+Moonli's syntax can be understood in terms of a (i) Core Syntax, and (ii) Macros. The core syntax makes space for macros, and macros provide extensibility. 
+
+### Core Syntax
 
 ```
   Lisp                       Moonli
@@ -168,376 +166,426 @@ Simple syntax table:
   #c(re, im)                 <TODO>
 ```
 
-### Global variables
+### Macros
 
-``` moonli
-defparameter *global* = 23
-```
+One defines a *Moonli Macro* or a *Moonli Short Macro* that expands to a Common Lisp macro or special form. These can be defined by `moonli:define-moonli-macro` and `moonli:define-moonli-short-macro` respectively. The difference between a *Moonli Macro* and a *Moonli Short Macro* is that the former end with `end` and can stretch over multiple lines, while the latter are expected to either span a single line or have their components be separated by non-newline whitespaces. See [src/macros](https://github.com/moonli-lang/moonli/tree/main/src/macroshttps://github.com/moonli-lang/moonli/tree/main/src/macros) for examples.
 
-### Local variables
+Several Moonli macros are predefined as part of Moonli system, and you can add more Moonli macros as part of your own library or application.
 
-``` moonli
-let answer-to-everything = 42 :
-  answer-to-everything
-end
-```
+Example transpilations for these predefined Moonli macros are given below:
 
-### Symbols
+#### declaim
 
-Most valid symbols can be written in moonli. For example, above
-`*global*` and `answer-to-everything` are each
-single symbols. This is unlike mainstream languages where
-`* - ? !` and several other characters are not allowed in
-symbols.
-
-However, this means that symbols must be separated from each other by
-space. This is necessary to make a distinction between whether a
-character stands for an infix operation or is part of a symbol.
-`a+b` is a single symbol, but `a + b` is
-translated to the lisp expression `(+ a b)`.
-
-### Function-like calls
-
-``` moonli
-identity("hello world")
-function(identity)
-```
-
-Because lisp macros and functions follow similar syntax, moonli syntax
-for function calls can also be used for macro calls when the macro
-syntax is simple. (Indeed, this can be inconvenient; see
-[*defining your own*]{.spurious-link target="defining your own"}.)
-
-``` moonli
-destructuring-bind(a(b),(1,2),+(1,2))
-```
-
-transpiles to
-
-```lisp
-(destructuring-bind (a b) (list 1 2)
-  (+ 1 2))
-```
-
-### Functions
-
-Like lisp, return is implicit.
-
-``` moonli
-defun fib(n):
-  if n < 0:
-     error("Don't know how to compute fib for n=~d < 0", n)
-  elif n == 0 or n == 1:
-     1
-  else:
-    fib(n - 1) + fib(n - 2)
-  end
-end
-```
-
-### Dictionaries or Hash-tables
-
-``` moonli
-{
-  :a : 2,
-  "b": $cl:progn
-}
-```
-
-transpiles to
-
-```lisp
-(fill-hash-table (:a 2) ("b" 'progn))
-```
-
-which expands to
-
-```lisp
-(let ((#:hash-table413 (make-hash-table :test #'equal :size 2)))
-  (setf (gethash :a #:hash-table413) 2
-        (gethash "b" #:hash-table413) 'progn)
-  #:hash-table413)
-```
-
-### Sets or Hash-sets
-
-``` moonli
-{:a, "b" , $cl:progn}
-```
-
-transpiles to
-
-```lisp
-(fill-hash-set :a "b" 'progn)
-```
-
-which expands to
-
-```lisp
-(let ((#:hash-set417 (make-hash-table :test #'equal :size 3)))
-  (setf (gethash :a #:hash-set417) t
-        (gethash "b" #:hash-set417) t
-        (gethash 'progn #:hash-set417) t)
-  #:hash-set417)
-```
-
-### Infix operators
-
-The following infix operators are recognized:
-
-- `+ - * / ^`
-- `or and not`
-- \< \<= == != \>= \>
-
-### lm
-
-``` moonli
-lm (): nil
-```
-
-transpiles to
-
-``` common-lisp
-(lambda () nil)
-```
-
-``` moonli
-lm (x): x
-```
-
-transpiles to
-
-``` common-lisp
-(lambda (x) x)
-```
-
-``` moonli
-lm (x, y): x + y
-```
-
-transpiles to
-
-``` common-lisp
-(lambda (x y) (+ x y))
-```
-
-### declaim
-
-``` moonli
+```moonli
 declaim inline(foo)
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (declaim (inline foo))
 ```
 
-``` moonli
+```moonli
 declaim type(hash-table, *map*)
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (declaim (type hash-table *map*))
 ```
 
-### declare
 
-``` moonli
+#### declare
+
+```moonli
 declare type(single-float, x, y)
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (declare (type single-float x y))
 ```
 
-``` moonli
+```moonli
 declare type(single-float, x, y), optimize(debug(3))
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (declare (type single-float x y)
          (optimize (debug 3)))
 ```
 
-### ifelse
 
-``` moonli
-ifelse a 5
-```
+#### defclass
 
-transpiles to
-
-``` common-lisp
-(if a
-    5
-    nil)
-```
-
-``` moonli
-ifelse a :hello :bye
-```
-
-transpiles to
-
-``` common-lisp
-(if a
-    hello
-    bye)
-```
-
-### lambda
-
-``` moonli
-lambda (): nil end
-```
-
-transpiles to
-
-``` common-lisp
-(lambda () nil)
-```
-
-``` moonli
-lambda (x):
-  x
+```moonli
+defclass point():
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(lambda (x) x)
+```common-lisp
+(defclass point nil nil)
 ```
 
-``` moonli
-lambda (x, y):
-  let sum = x + y:
-    sum ^ 2
+```moonli
+defclass point():
+  options:
+    metaclass: standard-class;
   end
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(lambda (x y)
-  (let ((sum (+ x y)))
-    (expt sum 2)))
+```common-lisp
+(defclass point nil nil (:metaclass standard-class))
 ```
 
-### let-plus:let+
-
-``` moonli
-let-plus:let+ x = 42: x
+```moonli
+defclass point():
+  options:
+    metaclass: standard-class;
+    documentation: "A class for Points!";
+  end
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(let+ ((x 42))
-  x)
+```common-lisp
+(defclass point nil nil (:metaclass standard-class)
+          (:documentation "A class for Points!"))
 ```
 
-``` moonli
-let-plus:let+ (a,b) = list(1,2):
-  a + b
+```moonli
+defclass point():
+  slots:
+  end
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(let+ (((a b) (list 1 2)))
-  (+ a b))
+```common-lisp
+(defclass point nil nil)
 ```
 
-``` moonli
-let-plus:let+ let-plus:&values(a,b) = list(1,2):
-  a + b
+```moonli
+defclass point():
+  slots:
+    x;
+    y;
+  end
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(let+ (((&values a b) (list 1 2)))
-  (+ a b))
+```common-lisp
+(defclass point nil ((x) (y)))
 ```
 
-``` moonli
-let-plus:let+
-  let-plus:&values(a,b) = list(1,2),
-  (c,d,e) = list(1,2,3):
-  {a,b,c,d,e}
+```moonli
+defclass point():
+  slots:
+    x:
+      initform: 2.0,
+      type: single-float,
+      accessor: point-x;
+  end
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(let+ (((&values a b) (list 1 2)) ((c d e) (list 1 2 3)))
-  (fill-hash-set a b c d e))
+```common-lisp
+(defclass point nil ((x :initform 2.0 :type single-float :accessor point-x)))
 ```
 
-### loop
-
-``` moonli
-loop end loop
-```
-
-transpiles to
-
-``` common-lisp
-(loop)
-```
-
-``` moonli
-loop :repeat n :do
-  print("hello")
+```moonli
+defclass point():
+  slots:
+    x:
+      initform: 2.0,
+      type: single-float,
+      accessor: point-x;
+    y:
+      initform: 2.0,
+      type: single-float,
+      accessor: point-y;
+  end
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(loop repeat n
-      do (print hello))
+```common-lisp
+(defclass point nil
+          ((x :initform 2.0 :type single-float :accessor point-x)
+           (y :initform 2.0 :type single-float :accessor point-y)))
 ```
 
-``` moonli
-loop :for i :below n :do
-  print(i + 1)
+```moonli
+defclass point():
+  slots:
+    x:
+      initform: 2.0,
+      type: single-float,
+      accessor: point-x;
+    y:
+      initform: 2.0,
+      type: single-float,
+      accessor: point-y;
+  end
+  options:
+    metaclass: standard-class;
+
+    documentation: "Two dimensional points.";
+
+  end
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(loop for i below n
-      do (print (+ i 1)))
+```common-lisp
+(defclass point nil
+          ((x :initform 2.0 :type single-float :accessor point-x)
+           (y :initform 2.0 :type single-float :accessor point-y))
+          (:metaclass standard-class)
+          (:documentation "Two dimensional points."))
 ```
 
-### defun
 
-``` moonli
+#### defgeneric
+
+```moonli
+defgeneric area(shape)
+```
+
+transpiles to
+
+```common-lisp
+(defgeneric area
+    (shape))
+```
+
+
+#### defmethod
+
+```moonli
+defmethod our-identity(x): x end
+```
+
+transpiles to
+
+```common-lisp
+(defmethod our-identity (x) x)
+```
+
+```moonli
+defmethod :before our-identity(x):
+  format(t, "Returning identity~%")
+end
+```
+
+transpiles to
+
+```common-lisp
+(defmethod :before our-identity (x) (format t "Returning identity~%"))
+```
+
+```moonli
+defmethod :after our-identity(x):
+  format(t, "Returned identity~%")
+end
+```
+
+transpiles to
+
+```common-lisp
+(defmethod :after our-identity (x) (format t "Returned identity~%"))
+```
+
+```moonli
+defmethod add (x :: number, y :: number):
+ x + y
+end
+```
+
+transpiles to
+
+```common-lisp
+(defmethod add ((x number) (y number)) (+ x y))
+```
+
+```moonli
+defmethod add (x :: number, y :: number, &rest, others):
+  x + if null(others):
+    y
+  else:
+    apply(function(add), y, others)
+  end
+end
+```
+
+transpiles to
+
+```common-lisp
+(defmethod add ((x number) (y number) &rest others)
+  (+ x (cond ((null others) y) (t (apply #'add y others)))))
+```
+
+```moonli
+defmethod add (x :: number, y :: number, &rest, others):
+  x + (if null(others):
+    y
+  else:
+    apply(function(add), y, others)
+  end)
+end
+```
+
+transpiles to
+
+```common-lisp
+(defmethod add ((x number) (y number) &rest others)
+  (+ x (cond ((null others) y) (t (apply #'add y others)))))
+```
+
+```moonli
+defmethod add (x :: string, y):
+  uiop:strcat(x, y)
+end
+```
+
+transpiles to
+
+```common-lisp
+(defmethod add ((x string) y) (uiop/utility:strcat x y))
+```
+
+
+#### defpackage
+
+```moonli
+defpackage foo
+  :use cl;
+end
+```
+
+transpiles to
+
+```common-lisp
+(defpackage foo
+  (:use cl))
+```
+
+
+#### defparameter
+
+```moonli
+defparameter a = 5
+```
+
+transpiles to
+
+```common-lisp
+(defparameter a 5)
+```
+
+
+#### defstruct
+
+```moonli
+defstruct foo:
+  a;
+  b;
+end
+```
+
+transpiles to
+
+```common-lisp
+(defstruct foo a b)
+```
+
+```moonli
+defstruct foo:
+  (a = 4) :: number;
+  b;
+end
+```
+
+transpiles to
+
+```common-lisp
+(defstruct foo (a 4 :type number) b)
+```
+
+```moonli
+defstruct foo:
+  (a = 4), :read-only = t;
+  b;
+end
+```
+
+transpiles to
+
+```common-lisp
+(defstruct foo (a 4 :read-only t) b)
+```
+
+```moonli
+defstruct foo:
+  (a = 4), :read-only = t;
+  (b = 2.0) :: single-float, :read-only = t;
+end
+```
+
+transpiles to
+
+```common-lisp
+(defstruct foo (a 4 :read-only t) (b 2.0 :type single-float :read-only t))
+```
+
+```moonli
+defstruct foo:
+  a = 4;
+  b = 2.0;
+end
+```
+
+transpiles to
+
+```common-lisp
+(defstruct foo (a 4) (b 2.0))
+```
+
+
+#### deftype
+
+
+#### defun
+
+```moonli
 defun our-identity(x): x end
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (defun our-identity (x) x)
 ```
 
-``` moonli
+```moonli
 defun add (&rest, args):
  args
 end defun
@@ -545,11 +593,11 @@ end defun
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (defun add (&rest args) args)
 ```
 
-``` moonli
+```moonli
 defun add(args):
   if null(args):
     0
@@ -561,33 +609,76 @@ end
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (defun add (args) (cond ((null args) 0) (t (+ (first args) (add (rest args))))))
 ```
 
-``` moonli
+```moonli
 defun foo(&optional, a = 5): a end
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (defun foo (&optional (a 5)) a)
 ```
 
-### if
 
-``` moonli
+#### defvar
+
+```moonli
+defvar a = 5
+```
+
+transpiles to
+
+```common-lisp
+(defvar a 5)
+```
+
+
+#### for
+
+```moonli
+for:for (i,j) in ((1,2),(3,4)):
+  print(i + j)
+end
+```
+
+transpiles to
+
+```common-lisp
+(for-minimal:for (((i j) in (list (list 1 2) (list 3 4))))
+  (print (+ i j)))
+```
+
+```moonli
+for:for i in (1,2,3), j in (2,3,4):
+  print(i + j)
+end
+```
+
+transpiles to
+
+```common-lisp
+(for-minimal:for ((i in (list 1 2 3)) (j in (list 2 3 4)))
+  (print (+ i j)))
+```
+
+
+#### if
+
+```moonli
 if a: b end if
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond (a b) (t))
 ```
 
-``` moonli
+```moonli
 if a:
   b; c
 end
@@ -595,11 +686,11 @@ end
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond (a b c) (t))
 ```
 
-``` moonli
+```moonli
 if a: b
 else: c
 end if
@@ -607,11 +698,11 @@ end if
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond (a b) (t c))
 ```
 
-``` moonli
+```moonli
 if a:
    b; d
 else:
@@ -621,11 +712,11 @@ end if
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond (a b d) (t c e))
 ```
 
-``` moonli
+```moonli
 if a: b
 elif c: d; e
 else: f
@@ -634,31 +725,31 @@ end if
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond (a b) (c d e) (t f))
 ```
 
-``` moonli
+```moonli
 (if a: b else: c; end)::boolean
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (the boolean (cond (a b) (t c)))
 ```
 
-``` moonli
+```moonli
 if null(args): 0; else: 1 end
 ```
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond ((null args) 0) (t 1))
 ```
 
-``` moonli
+```moonli
 if null(args):
     0
 else:
@@ -668,11 +759,11 @@ end if
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond ((null args) 0) (t (first args)))
 ```
 
-``` moonli
+```moonli
 if null(args):
   0
 else:
@@ -682,11 +773,11 @@ end if
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond ((null args) 0) (t (+ 2 3)))
 ```
 
-``` moonli
+```moonli
 if null(args):
   0
 else:
@@ -696,13 +787,138 @@ end if
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (cond ((null args) 0) (t (+ (first args) (add (rest args)))))
 ```
 
-### let
 
-``` moonli
+#### ifelse
+
+```moonli
+ifelse a 5
+```
+
+transpiles to
+
+```common-lisp
+(if a
+    5
+    nil)
+```
+
+```moonli
+ifelse a :hello :bye
+```
+
+transpiles to
+
+```common-lisp
+(if a
+    :hello
+    :bye)
+```
+
+
+#### in-package
+
+
+#### labels
+
+```moonli
+labels foo(x):
+         bar(x - 1)
+       end,
+       bar(x):
+         if (x < 0): nil else: foo(x - 1) end
+       end:
+  foo(42)
+end
+```
+
+transpiles to
+
+```common-lisp
+(labels ((foo (x)
+           (bar (- x 1)))
+         (bar (x)
+           (cond ((< x 0) nil) (t (foo (- x 1))))))
+  (foo 42))
+```
+
+```moonli
+labels foo(x):
+         if (x < 0): nil else: foo(x - 1) end
+       end:
+  foo(42)
+end
+```
+
+transpiles to
+
+```common-lisp
+(labels ((foo (x)
+           (cond ((< x 0) nil) (t (foo (- x 1))))))
+  (foo 42))
+```
+
+```moonli
+labels :
+  nil
+end
+```
+
+transpiles to
+
+```common-lisp
+(labels ()
+  nil)
+```
+
+
+#### lambda
+
+```moonli
+lambda (): nil end
+```
+
+transpiles to
+
+```common-lisp
+(lambda () nil)
+```
+
+```moonli
+lambda (x):
+  x
+end
+```
+
+transpiles to
+
+```common-lisp
+(lambda (x) x)
+```
+
+```moonli
+lambda (x, y):
+  let sum = x + y:
+    sum ^ 2
+  end
+end
+```
+
+transpiles to
+
+```common-lisp
+(lambda (x y)
+  (let ((sum (+ x y)))
+    (expt sum 2)))
+```
+
+
+#### let
+
+```moonli
 let a = 2, b = 3:
    a + b
 end
@@ -710,12 +926,12 @@ end
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (let ((a 2) (b 3))
   (+ a b))
 ```
 
-``` moonli
+```moonli
 let a = 2, b = 3:
    a + b
 end let
@@ -723,35 +939,149 @@ end let
 
 transpiles to
 
-``` common-lisp
+```common-lisp
 (let ((a 2) (b 3))
   (+ a b))
 ```
 
-### for:for
 
-``` moonli
-for:for (i,j) in ((1,2),(3,4)):
-  print(i + j)
+#### let+
+
+```moonli
+let-plus:let+ x = 42: x
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(for (((i j) in (list (list 1 2) (list 3 4))))
-  (print (+ i j)))
+```common-lisp
+(let+ ((x 42))
+  x)
 ```
 
-``` moonli
-for:for i in (1,2,3), j in (2,3,4):
-  print(i + j)
+```moonli
+let-plus:let+ (a,b) = list(1,2):
+  a + b
 end
 ```
 
 transpiles to
 
-``` common-lisp
-(for ((i in (list 1 2 3)) (j in (list 2 3 4)))
-  (print (+ i j)))
+```common-lisp
+(let+ (((a b) (list 1 2)))
+  (+ a b))
 ```
+
+```moonli
+let-plus:let+ let-plus:&values(a,b) = list(1,2):
+  a + b
+end
+```
+
+transpiles to
+
+```common-lisp
+(let+ (((&values a b) (list 1 2)))
+  (+ a b))
+```
+
+```moonli
+let-plus:let+
+  let-plus:&values(a,b) = list(1,2),
+  (c,d,e) = list(1,2,3):
+  {a,b,c,d,e}
+end
+```
+
+transpiles to
+
+```common-lisp
+(let+ (((&values a b) (list 1 2)) ((c d e) (list 1 2 3)))
+  (fill-hash-set a b c d e))
+```
+
+
+#### lm
+
+```moonli
+lm (): nil
+```
+
+transpiles to
+
+```common-lisp
+(lambda () nil)
+```
+
+```moonli
+lm (x): x
+```
+
+transpiles to
+
+```common-lisp
+(lambda (x) x)
+```
+
+```moonli
+lm (x, y): x + y
+```
+
+transpiles to
+
+```common-lisp
+(lambda (x y) (+ x y))
+```
+
+
+#### loop
+
+```moonli
+loop end loop
+```
+
+transpiles to
+
+```common-lisp
+(loop)
+```
+
+```moonli
+loop :repeat n :do
+  print("hello")
+end
+```
+
+transpiles to
+
+```common-lisp
+(loop :repeat n
+      :do (print "hello"))
+```
+
+```moonli
+loop :for i :below n :do
+  print(i + 1)
+end
+```
+
+transpiles to
+
+```common-lisp
+(loop :for i :below n
+      :do (print (+ i 1)))
+```
+
+
+#### time
+
+```moonli
+time length("hello world")
+```
+
+transpiles to
+
+```common-lisp
+(time (length "hello world"))
+```
+

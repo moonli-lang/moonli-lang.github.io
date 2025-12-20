@@ -1,7 +1,8 @@
 ---
 title: Installation
 linkTitle: Installation
-menu: {main: {weight: 20}}
+weight: 1
+menu: {main: {weight: 15}}
 ---
 
 ## Method 1: Binaries
