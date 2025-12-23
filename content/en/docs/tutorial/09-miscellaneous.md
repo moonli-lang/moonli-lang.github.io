@@ -3,6 +3,14 @@ title: 9. Miscellaneous
 linkTitle: 9. Miscellaneous
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../08-types/">
+  < Previous: 8. Types, Classes and Structures
+</a>
+<a class="tutorial-next" href="">
+</a>
+</div>
+
 So far, in this tutorial series, we have seen different aspects of Moonli (and Common Lisp) without seeing constructs to write your own code. Here we cover some of those constructs.
 
 ## Conditional Execution
@@ -208,3 +216,11 @@ format(t, "~{~A~^, ~}", (1,2,3))
 ### More directives
 
 The [wikipedia page on format](https://en.wikipedia.org/wiki/Format_(Common_Lisp)) lists the variety of directives supported by `format`.
+
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../08-types/">
+  < Previous: 8. Types, Classes and Structures
+</a>
+<a class="tutorial-next" href="">
+</a>
+</div>

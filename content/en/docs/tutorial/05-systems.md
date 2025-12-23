@@ -3,6 +3,15 @@ title: 5. Systems and Libraries
 linkTitle: 5. Systems and Libraries
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../04-packages/">
+  < Previous: 4. Packages and Namespaces
+</a>
+<a class="tutorial-next" href="../06-classes/">
+  Next: 6. Classes and Methods >
+</a>
+</div>
+
 Once you have someone else' code, you need to tell the REPL how to *load* their code. Or when you share your code with someone, you also need to tell them how to tell their REPL to load your code. At its simplest, the shared code is in the form of a single file. You can load a Moonli file using `moonli:load-moonli-file` and Common Lisp files using `cl:load`:
 
 ```moonli
@@ -187,3 +196,11 @@ Moonli developers can publish their own libraries to Ultralisp to reach users qu
 | **OCICL**     | Modern alternative that also allows dependency-locking | Providing reproducible build environments    |
 
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../04-packages/">
+  < Previous: 4. Packages and Namespaces
+</a>
+<a class="tutorial-next" href="../06-classes/">
+  Next: 6. Classes and Methods >
+</a>
+</div>

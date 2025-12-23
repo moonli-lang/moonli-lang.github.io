@@ -3,6 +3,15 @@ title: 4. Packages and Namespaces
 linkTitle: 4. Packages and Namespaces
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../03-functions/">
+  < Previous: 3. Functions and Abstractions
+</a>
+<a class="tutorial-next" href="../05-systems/">
+  Next: 5. Systems and Libraries >
+</a>
+</div>
+
 Suppose you write some code and share it with other people. Or you want to use code written by other people. It may happen that both of you are using the same function names but are doing different things. For example, your `process-data` function might be doing something different that somebody else' `process-data` function.
 
 To deal with this, most modern languages implement the concept of namespaces. The implementation of namespaces in Moonli (and Common Lisp) is made by a data structure called `package`. One way to find or identify packages is using strings.
@@ -115,3 +124,11 @@ TUTORIAL> alexandria:ensure-list(42.0)
 [OUT]: (42.0)
 ```
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../03-functions/">
+  < Previous: 3. Functions and Abstractions
+</a>
+<a class="tutorial-next" href="../05-systems/">
+  Next: 5. Systems and Libraries >
+</a>
+</div>

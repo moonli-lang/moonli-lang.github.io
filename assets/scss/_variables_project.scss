@@ -4,3 +4,27 @@ Add styles or override variables from the theme here.
 
 */
 
+.tutorial-nav{
+    width:100%;
+    font-weight: bold;
+    padding: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background-color: #ddd;
+}
+
+.tutorial-nav > a{
+    display: inline-block;
+}
+
+.tutorial-next{
+    text-align: left;
+    float:left;
+    clear:both;
+}
+
+.tutorial-next{
+    text-align: right;
+    float:right;
+    clear:both;
+}

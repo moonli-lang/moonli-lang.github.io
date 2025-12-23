@@ -3,6 +3,15 @@ title: 6. Classes and Methods
 linkTitle: 6. Classes and Methods
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../05-systems/">
+  < Previous: 5. Systems and Libraries
+</a>
+<a class="tutorial-next" href="../07-structures/">
+  Next: 7. Structures and Performance >
+</a>
+</div>
+
 Recall that while discussing [literal objects](01-literals.md), we discussed different kinds of literal objects. Each object in Moonli (and Common Lisp) has a *class*.
 
 ```moonli
@@ -330,3 +339,11 @@ Moonli transpiles directly to Common Lisp’s CLOS:
 
 Moonli gives you a simple, readable syntax while inheriting the dynamic power of the Lisp object system beneath it.
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../05-systems/">
+  < Previous: 5. Systems and Libraries
+</a>
+<a class="tutorial-next" href="../07-structures/">
+  Next: 7. Structures and Performance >
+</a>
+</div>

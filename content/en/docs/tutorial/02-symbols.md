@@ -3,6 +3,15 @@ title: 2. Symbols, Variables, and Values
 linkTitle: 2. Symbols, Variables, and Values
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../01-literals/">
+  < Previous: 1. Literal Objects
+</a>
+<a class="tutorial-next" href="../03-functions/">
+  Next: 3. Functions and Abstractions >
+</a>
+</div>
+
 A critical aspect of programming is building abstractions. The first step to such abstractions involves using *variables* to stand in for *[literal values](01-literals.md)* that we studied in the last section.
 
 Programmatically, *variables* are *symbols* that can be *eval*-uated to obtain the *value* they are bound to. You have already seen a few symbols. Below, `x` and `:i-am-a-keyword` are two symbols.
@@ -196,3 +205,11 @@ Instead of saying "multiply 23 by itself", now you are saying "multiply x by its
 
 Abstractions can help to keep code simple -- it allows code to be *reused*.
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../01-literals/">
+  < Previous: 1. Literal Objects
+</a>
+<a class="tutorial-next" href="../03-functions/">
+  Next: 3. Functions and Abstractions >
+</a>
+</div>

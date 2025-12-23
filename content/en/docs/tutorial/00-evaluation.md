@@ -3,6 +3,14 @@ title: 0. Evaluation
 linkTitle: 0. Evaluation
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev">
+</a>
+<a class="tutorial-next" href="../01-literals/">
+  Next: 1. Literal Objects >
+</a>
+</div>
+
 Starting Moonli either using the included binary or using VS Code will start a Read–Eval–Print Loop (REPL).
 
 > In VS Code, you will need to switch to a separate tab that contains the REPL.
@@ -34,3 +42,10 @@ MOONLI-USER> $(1 + 2)
 
 Note that for `$(1 + 2)`, even though evaluation has been avoided, the expression is printed as it appears to Moonli internally, just before the step of evaluation. What you type at the REPL is converted to an internal representation that Moonli can then work with.
 
+<div class="tutorial-nav">
+<a class="tutorial-prev">
+</a>
+<a class="tutorial-next" href="../01-literals/">
+  Next: 1. Literal Objects >
+</a>
+</div>

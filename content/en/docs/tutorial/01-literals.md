@@ -3,6 +3,15 @@ title: 1. Literal Objects
 linkTitle: 1. Literal Objects
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../00-evaluation/">
+  < Previous: 0. Evaluation
+</a>
+<a class="tutorial-next" href="../02-symbols/">
+  Next: 2. Symbols, Variables, and Values >
+</a>
+</div>
+
 In a programming language, a literal object is something the evaluator doesn’t need to compute—it already is its own value. When the REPL reads a literal like 5, "hello", or #t, the eval step simply returns it unchanged, because it directly represents itself.
 
 For example, since `5` is already a number:
@@ -98,5 +107,12 @@ MOONLI-USER> 'a'
 [OUT]: #\a
 ```
 
-
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../00-evaluation/">
+  < Previous: 0. Evaluation
+</a>
+<a class="tutorial-next" href="../02-symbols/">
+  Next: 2. Symbols, Variables, and Values >
+</a>
+</div>
 

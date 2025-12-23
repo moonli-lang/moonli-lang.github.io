@@ -3,6 +3,15 @@ title: 8. Types, Classes and Structures
 linkTitle: 8. Types, Classes and Structures
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../07-structures/">
+  < Previous: 7. Structures and Performance
+</a>
+<a class="tutorial-next" href="../09-miscellaneous/">
+  Next: 9. Miscellaneous >
+</a>
+</div>
+
 So far, we have seen a number of *types*. Built-in types such as `string`, `fixnum`, `symbol`, as well as user-defined types such as `point`, `shape`, `rectangle` and `circle.
 
 Classes -- either [standard-classes](06-classes.md) or [structure-classes](07-structures.md) -- and Types have a close correspondence. Every class defines a type. That is why, even though `point`, `shape`, etc were defined as classes, they are also types. Most types also have a corresponding class. The [Common Lisp Hyperspec page on *Integrating Types and Classes*](http://www.ai.mit.edu/projects/iiip/doc/CommonLISP/HyperSpec/Body/sec_4-3-7.html) go into this in detail.
@@ -102,3 +111,12 @@ For most common types, the second value is `t`, but eventually, you can expect t
 While types allow powerful expressive capabilities, in general, they cannot all be used as the method specializers in generic functions. Only `eql`-types and types that correspond exactly to a class are allowed method specializers of the generic functions. Thus, there are no *standard* ways to make the behavior of a function depend on the detailed types of its objects.
 
 However, there are again projects such as [peltadot](https://gitlab.com/digikar/peltadot) and [polymorphic-functions](https://github.com/digikar99/polymorphic-functions) that attempt to provide functions that dispatch on arbitrary type specifiers.
+
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../07-structures/">
+  < Previous: 7. Structures and Performance
+</a>
+<a class="tutorial-next" href="../09-miscellaneous/">
+  Next: 9. Miscellaneous >
+</a>
+</div>

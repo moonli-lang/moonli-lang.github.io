@@ -3,6 +3,15 @@ title: 7. Structures and Performance
 linkTitle: 7. Structures and Performance
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../06-classes/">
+  < Previous: 6. Classes and Methods
+</a>
+<a class="tutorial-next" href="../08-types/">
+  Next: 8. Types, Classes and Structures >
+</a>
+</div>
+
 As we saw [last](06-classes.md), classes in Moonli (and Common Lisp) are very dynamic. A lot many things take place at run-time. Unfortunately, this also incurs a run-time cost.
 
 In some cases, you may not need all that dynamicity, but may instead need better performance. This is achieved through *structures*. 
@@ -276,3 +285,11 @@ Classes are perfect for flexible, evolving designs. Structures are ideal for per
 | Use with generic functions | ✅      | ✅         |
     
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../06-classes/">
+  < Previous: 6. Classes and Methods
+</a>
+<a class="tutorial-next" href="../08-types/">
+  Next: 8. Types, Classes and Structures >
+</a>
+</div>

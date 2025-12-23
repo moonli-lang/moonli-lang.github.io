@@ -3,6 +3,15 @@ title: 3. Functions and Abstractions
 linkTitle: 3. Functions and Abstractions
 ---
 
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../02-symbols/">
+  < Previous: 2. Symbols, Variables, and Values
+</a>
+<a class="tutorial-next" href="../04-packages/">
+  Next: 4. Packages and Namespaces >
+</a>
+</div>
+
 Besides *variables* that we studied in the [last chapter](./02-symbols.md), the second key element to abstraction are *functions*.
 
 Even if you write abstract code such as the one in the last chapter, you will need to write it again and again for different values of x:
@@ -164,3 +173,12 @@ y-cubed has value: 27
 ```
 
 Usually, writing something as a function instead of repeating it needlessly everywhere is helpful because it enables *reuse*.
+
+<div class="tutorial-nav">
+<a class="tutorial-prev" href="../02-symbols/">
+  < Previous: 2. Symbols, Variables, and Values
+</a>
+<a class="tutorial-next" href="../04-packages/">
+  Next: 4. Packages and Namespaces >
+</a>
+</div>
