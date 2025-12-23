@@ -142,6 +142,7 @@ macros](https://www.quora.com/What-is-your-favourite-non-mainstream-programming-
 - [ ] Add more forms: progn, mvb, dsb, more...
 - [ ] Add more tests
 - [ ] Reverse transpile from common lisp
+- [ ] Multidimensional arrays, broadcasting, other operations: needs an array library
 
 ## Syntax
 
