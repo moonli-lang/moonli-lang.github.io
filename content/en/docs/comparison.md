@@ -1,7 +1,7 @@
 ---
 title: Feature comparison across different programming languages
 linkTitle: Feature comparison across different programming languages
-weight: 10
+weight: 40
 ---
 
 Here's a brief comparison of features across different languages.

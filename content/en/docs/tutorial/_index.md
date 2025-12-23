@@ -1,7 +1,6 @@
 ---
 title: Tutorial
 linkTitle: Tutorial
-weight: 2
+weight: 20
 menu: {main: {weight: 20}}
 ---
-

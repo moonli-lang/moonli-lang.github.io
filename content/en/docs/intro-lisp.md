@@ -1,14 +1,10 @@
 ---
 title: Introduction to Moonli for Common Lispers
-linkTitle: Introduction to Moonli for Common Lispers
-weight: 3
+linkTitle: For Common Lispers
+weight: 30
 ---
 
-
-
-## What
-
-This is a syntax layer that transpiles to Common Lisp.
+Moonli is a syntax layer that transpiles to Common Lisp.
 
 For example,
 
@@ -33,54 +29,41 @@ transpiles to:
              (sum (rest args))))))
 ```
 
-See [./moonli-sample.asd](./moonli-sample.asd) and
-[./sample/sample.moonli](./sample/sample.moonli) to include in your
+See [moonli-sample.asd](https://github.com/moonli-lang/moonli/blob/main/moonli-sample.asd) and
+[sample/sample.moonli](https://github.com/moonli-lang/moonli/blob/main/sample/sample.moonli) to include in your
 project.
 
-## Table of Contents
+# Table of Contents
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
 
-- [What](#what)
-- [Why](#why)
-- [Features](#features)
-    - [For common lispers](#for-common-lispers)
-    - [For programmers in general](#for-programmers-in-general)
-- [Plan](#plan)
-- [Syntax](#syntax)
-    - [Core Syntax](#core-syntax)
-    - [Macros](#macros)
-        - [declaim](#declaim)
-        - [declare](#declare)
-        - [defclass](#defclass)
-        - [defgeneric](#defgeneric)
-        - [defmethod](#defmethod)
-        - [defpackage](#defpackage)
-        - [defparameter](#defparameter)
-        - [defstruct](#defstruct)
-        - [deftype](#deftype)
-        - [defun](#defun)
-        - [defvar](#defvar)
-        - [for](#for)
-        - [if](#if)
-        - [if](#if-1)
-        - [if](#if-2)
-        - [if](#if-3)
-        - [ifelse](#ifelse)
-        - [in-package](#in-package)
-        - [labels](#labels)
-        - [lambda](#lambda)
-        - [let](#let)
-        - [let+](#let)
-        - [lm](#lm)
-        - [loop](#loop)
-        - [time](#time)
+- [Core Syntax](#core-syntax)
+- [Macros](#macros)
+    - [declaim](#declaim)
+    - [declare](#declare)
+    - [defclass](#defclass)
+    - [defgeneric](#defgeneric)
+    - [defmethod](#defmethod)
+    - [defpackage](#defpackage)
+    - [defparameter](#defparameter)
+    - [defstruct](#defstruct)
+    - [deftype](#deftype)
+    - [defun](#defun)
+    - [defvar](#defvar)
+    - [for](#for)
+    - [if](#if)
+    - [ifelse](#ifelse)
+    - [in-package](#in-package)
+    - [labels](#labels)
+    - [lambda](#lambda)
+    - [let](#let)
+    - [let+](#let)
+    - [lm](#lm)
+    - [loop](#loop)
+    - [time](#time)
 
 <!-- markdown-toc end -->
 
-
-## Why
 
 Due to tools like
 [paredit](http://danmidwood.com/content/2014/11/21/animated-paredit.html)
@@ -100,57 +83,24 @@ clean as common lisp. ([Common Lisp](https://common-lisp.net/) is also
 good for [reasons beyond
 macros](https://www.quora.com/What-is-your-favourite-non-mainstream-programming-language/answer/Shubhamkar-Ayare).)
 
-## Features
-
-### For common lispers
+## Contrasts with Common Lisp
 
 - Case sensitive, but invert-case reader to maintain common lisp
   compatibility
-- Transpile to common lisp, so lispers need not \"learn a new language\"
 - Extensible using `moonli:define-moonli-macro` and
   `moonli:define-short-moonli-macro`. See
-  [./src/macros/](./src/macros/) directory for examples.
+  [src/macros/](https://github.com/moonli-lang/moonli/tree/main/src/macros) directory for examples.
 - Inability to access internal symbols of another package through
   \"A::B\" syntax; this syntax rather translates to
   `(the B A)`
 
-### For programmers in general
-
-- Sane variable scoping rules as given by common lisp
-- Sane namespace scoping thanks to common lisp package system
-- Sane restarts and condition system thanks to common lisp
-- Optional typing, optional dynamic scoping
-- Availability of optimizing compilers such as SBCL
-- Sensitive to newlines and semicolons but not to spaces and tabs
-  (indentation insensitive)
-- Returning multiple values without an intermediate data structure
-- Support for rapid prototyping through CLOS and image-based development
-
-  
-## Plan
-
-- [x] Real numbers, strings, characters, lists, infix arithmetic
-  operators, literal hash-tables, literal hash-sets
-- [x] Typing using \"expr::type\" operator
-- [x] Support for declare and declaim
-- [x] Literal syntax for vectors, array access
-- [x] BODMAS rule for parsing expressions
-- [x] Binaries
-- [x] VS Code integration
-- [ ] Emacs mode and integration with slime
-- [x] Infix Logical operators
-- [ ] Add more forms: progn, mvb, dsb, more...
-- [ ] Add more tests
-- [ ] Reverse transpile from common lisp
-- [ ] Multidimensional arrays, broadcasting, other operations: needs an array library
-
-## Syntax
+# Syntax
 
 As with lisp, everything is an expression.
 
 Moonli's syntax can be understood in terms of a (i) Core Syntax, and (ii) Macros. The core syntax makes space for macros, and macros provide extensibility. 
 
-### Core Syntax
+## Core Syntax
 
 ```
   Lisp                       Moonli
@@ -167,15 +117,15 @@ Moonli's syntax can be understood in terms of a (i) Core Syntax, and (ii) Macros
   #c(re, im)                 <TODO>
 ```
 
-### Macros
+## Macros
 
-One defines a *Moonli Macro* or a *Moonli Short Macro* that expands to a Common Lisp macro or special form. These can be defined by `moonli:define-moonli-macro` and `moonli:define-moonli-short-macro` respectively. The difference between a *Moonli Macro* and a *Moonli Short Macro* is that the former end with `end` and can stretch over multiple lines, while the latter are expected to either span a single line or have their components be separated by non-newline whitespaces. See [src/macros](https://github.com/moonli-lang/moonli/tree/main/src/macroshttps://github.com/moonli-lang/moonli/tree/main/src/macros) for examples.
+One defines a *Moonli Macro* or a *Moonli Short Macro* that expands to a Common Lisp macro or special form. These can be defined by `moonli:define-moonli-macro` and `moonli:define-moonli-short-macro` respectively. The difference between a *Moonli Macro* and a *Moonli Short Macro* is that the former end with `end` and can stretch over multiple lines, while the latter are expected to either span a single line or have their components be separated by non-newline whitespaces. See [src/macros](https://github.com/moonli-lang/moonli/tree/main/src/macros) for examples.
 
 Several Moonli macros are predefined as part of Moonli system, and you can add more Moonli macros as part of your own library or application.
 
 Example transpilations for these predefined Moonli macros are given below:
 
-#### declaim
+### declaim
 
 ```moonli
 declaim inline(foo)
@@ -198,7 +148,7 @@ transpiles to
 ```
 
 
-#### declare
+### declare
 
 ```moonli
 declare type(single-float, x, y)
@@ -222,7 +172,7 @@ transpiles to
 ```
 
 
-#### defclass
+### defclass
 
 ```moonli
 defclass point():
@@ -365,7 +315,7 @@ transpiles to
 ```
 
 
-#### defgeneric
+### defgeneric
 
 ```moonli
 defgeneric area(shape)
@@ -379,7 +329,7 @@ transpiles to
 ```
 
 
-#### defmethod
+### defmethod
 
 ```moonli
 defmethod our-identity(x): x end
@@ -474,7 +424,7 @@ transpiles to
 ```
 
 
-#### defpackage
+### defpackage
 
 ```moonli
 defpackage foo
@@ -490,7 +440,7 @@ transpiles to
 ```
 
 
-#### defparameter
+### defparameter
 
 ```moonli
 defparameter a = 5
@@ -503,7 +453,7 @@ transpiles to
 ```
 
 
-#### defstruct
+### defstruct
 
 ```moonli
 defstruct foo:
@@ -571,10 +521,10 @@ transpiles to
 ```
 
 
-#### deftype
+### deftype
 
 
-#### defun
+### defun
 
 ```moonli
 defun our-identity(x): x end
@@ -625,7 +575,7 @@ transpiles to
 ```
 
 
-#### defvar
+### defvar
 
 ```moonli
 defvar a = 5
@@ -638,7 +588,7 @@ transpiles to
 ```
 
 
-#### for
+### for
 
 ```moonli
 for:for (i,j) in ((1,2),(3,4)):
@@ -667,7 +617,7 @@ transpiles to
 ```
 
 
-#### if
+### if
 
 ```moonli
 if a: b end if
@@ -793,7 +743,7 @@ transpiles to
 ```
 
 
-#### ifelse
+### ifelse
 
 ```moonli
 ifelse a 5
@@ -820,10 +770,10 @@ transpiles to
 ```
 
 
-#### in-package
+### in-package
 
 
-#### labels
+### labels
 
 ```moonli
 labels foo(x):
@@ -876,7 +826,7 @@ transpiles to
 ```
 
 
-#### lambda
+### lambda
 
 ```moonli
 lambda (): nil end
@@ -917,7 +867,7 @@ transpiles to
 ```
 
 
-#### let
+### let
 
 ```moonli
 let a = 2, b = 3:
@@ -946,7 +896,7 @@ transpiles to
 ```
 
 
-#### let+
+### let+
 
 ```moonli
 let-plus:let+ x = 42: x
@@ -1002,7 +952,7 @@ transpiles to
 ```
 
 
-#### lm
+### lm
 
 ```moonli
 lm (): nil
@@ -1035,7 +985,7 @@ transpiles to
 ```
 
 
-#### loop
+### loop
 
 ```moonli
 loop end loop
@@ -1074,7 +1024,7 @@ transpiles to
 ```
 
 
-#### time
+### time
 
 ```moonli
 time length("hello world")
