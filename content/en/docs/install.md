@@ -5,7 +5,7 @@ weight: 10
 menu: {main: {weight: 15}}
 ---
 
-## Method 1: Binaries
+## Method 1: Binaries - Best for checking out
 
 Grab a binary from the [latest
 release](https://github.com/digikar99/moonli/releases/latest). If you
@@ -25,9 +25,9 @@ In case of any installation issues, please create an issue on
 [github](https://github.com/digikar99/moonli/issues/new) or
 [gitlab](https://gitlab.com/digikar/moonli/-/issues/new?type=ISSUE).
 
-## Method 2: From fresh compilers
+## Method 2: From fresh compilers - Best for serious development
 
-### Step 0. Install a package manager
+### Step 0. Install a package manager for your OS
 
 Mac OS: [brew](https://brew.sh/)
 
@@ -39,7 +39,7 @@ Windows:
   `pacman` package manager
 - Or [choco](https://chocolatey.org/install)
 
-### Step 1. Install a compiler and some tools
+### Step 1. Install a Common Lisp compiler and some tools
 
 - Ubuntu: `sudo apt install git sbcl`
 - Mac OS: `brew install git sbcl`
@@ -113,7 +113,7 @@ current directory, or
        :inherit-configuration))
 ```
 
-### Step 3. Moonli
+### Step 3. Install Moonli
 
 1.  3.1. Obtain the source
 
@@ -149,3 +149,10 @@ current directory, or
     ```common-lisp
     (asdf:make :moonli/repl)
     ```
+
+### Step 4. Set up VS Code
+
+Install [VS Code](https://vscodium.com/) or [VSCodium](https://vscodium.com/) if they are not already installed.
+
+Once the editor is installed, install the [Alive Moonli](https://marketplace.visualstudio.com/items?itemName=moonli-lang.alive-moonli) extension.
+
