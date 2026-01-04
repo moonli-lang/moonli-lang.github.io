@@ -133,7 +133,7 @@ declaim inline(foo)
 
 transpiles to
 
-```common-lisp
+```lisp
 (declaim (inline foo))
 ```
 
@@ -143,7 +143,7 @@ declaim type(hash-table, *map*)
 
 transpiles to
 
-```common-lisp
+```lisp
 (declaim (type hash-table *map*))
 ```
 
@@ -156,7 +156,7 @@ declare type(single-float, x, y)
 
 transpiles to
 
-```common-lisp
+```lisp
 (declare (type single-float x y))
 ```
 
@@ -166,7 +166,7 @@ declare type(single-float, x, y), optimize(debug(3))
 
 transpiles to
 
-```common-lisp
+```lisp
 (declare (type single-float x y)
          (optimize (debug 3)))
 ```
@@ -181,7 +181,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defclass point nil nil)
 ```
 
@@ -195,7 +195,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defclass point nil nil (:metaclass standard-class))
 ```
 
@@ -210,7 +210,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defclass point nil nil (:metaclass standard-class)
           (:documentation "A class for Points!"))
 ```
@@ -224,7 +224,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defclass point nil nil)
 ```
 
@@ -239,7 +239,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defclass point nil ((x) (y)))
 ```
 
@@ -256,7 +256,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defclass point nil ((x :initform 2.0 :type single-float :accessor point-x)))
 ```
 
@@ -277,7 +277,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defclass point nil
           ((x :initform 2.0 :type single-float :accessor point-x)
            (y :initform 2.0 :type single-float :accessor point-y)))
@@ -306,7 +306,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defclass point nil
           ((x :initform 2.0 :type single-float :accessor point-x)
            (y :initform 2.0 :type single-float :accessor point-y))
@@ -323,7 +323,7 @@ defgeneric area(shape)
 
 transpiles to
 
-```common-lisp
+```lisp
 (defgeneric area
     (shape))
 ```
@@ -337,7 +337,7 @@ defmethod our-identity(x): x end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defmethod our-identity (x) x)
 ```
 
@@ -349,7 +349,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defmethod :before our-identity (x) (format t "Returning identity~%"))
 ```
 
@@ -361,7 +361,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defmethod :after our-identity (x) (format t "Returned identity~%"))
 ```
 
@@ -373,7 +373,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defmethod add ((x number) (y number)) (+ x y))
 ```
 
@@ -389,7 +389,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defmethod add ((x number) (y number) &rest others)
   (+ x (cond ((null others) y) (t (apply #'add y others)))))
 ```
@@ -406,7 +406,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defmethod add ((x number) (y number) &rest others)
   (+ x (cond ((null others) y) (t (apply #'add y others)))))
 ```
@@ -419,7 +419,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defmethod add ((x string) y) (uiop/utility:strcat x y))
 ```
 
@@ -434,7 +434,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defpackage foo
   (:use cl))
 ```
@@ -448,7 +448,7 @@ defparameter a = 5
 
 transpiles to
 
-```common-lisp
+```lisp
 (defparameter a 5)
 ```
 
@@ -464,7 +464,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defstruct foo a b)
 ```
 
@@ -477,7 +477,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defstruct foo (a 4 :type number) b)
 ```
 
@@ -490,7 +490,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defstruct foo (a 4 :read-only t) b)
 ```
 
@@ -503,7 +503,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defstruct foo (a 4 :read-only t) (b 2.0 :type single-float :read-only t))
 ```
 
@@ -516,7 +516,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defstruct foo (a 4) (b 2.0))
 ```
 
@@ -532,7 +532,7 @@ defun our-identity(x): x end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defun our-identity (x) x)
 ```
 
@@ -544,7 +544,7 @@ end defun
 
 transpiles to
 
-```common-lisp
+```lisp
 (defun add (&rest args) args)
 ```
 
@@ -560,7 +560,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defun add (args) (cond ((null args) 0) (t (+ (first args) (add (rest args))))))
 ```
 
@@ -570,7 +570,7 @@ defun foo(&optional, a = 5): a end
 
 transpiles to
 
-```common-lisp
+```lisp
 (defun foo (&optional (a 5)) a)
 ```
 
@@ -583,7 +583,7 @@ defvar a = 5
 
 transpiles to
 
-```common-lisp
+```lisp
 (defvar a 5)
 ```
 
@@ -598,7 +598,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (for-minimal:for (((i j) in (list (list 1 2) (list 3 4))))
   (print (+ i j)))
 ```
@@ -611,7 +611,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (for-minimal:for ((i in (list 1 2 3)) (j in (list 2 3 4)))
   (print (+ i j)))
 ```
@@ -625,7 +625,7 @@ if a: b end if
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond (a b) (t))
 ```
 
@@ -637,7 +637,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond (a b c) (t))
 ```
 
@@ -649,7 +649,7 @@ end if
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond (a b) (t c))
 ```
 
@@ -663,7 +663,7 @@ end if
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond (a b d) (t c e))
 ```
 
@@ -676,7 +676,7 @@ end if
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond (a b) (c d e) (t f))
 ```
 
@@ -686,7 +686,7 @@ transpiles to
 
 transpiles to
 
-```common-lisp
+```lisp
 (the boolean (cond (a b) (t c)))
 ```
 
@@ -696,7 +696,7 @@ if null(args): 0; else: 1 end
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond ((null args) 0) (t 1))
 ```
 
@@ -710,7 +710,7 @@ end if
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond ((null args) 0) (t (first args)))
 ```
 
@@ -724,7 +724,7 @@ end if
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond ((null args) 0) (t (+ 2 3)))
 ```
 
@@ -738,7 +738,7 @@ end if
 
 transpiles to
 
-```common-lisp
+```lisp
 (cond ((null args) 0) (t (+ (first args) (add (rest args)))))
 ```
 
@@ -751,7 +751,7 @@ ifelse a 5
 
 transpiles to
 
-```common-lisp
+```lisp
 (if a
     5
     nil)
@@ -763,7 +763,7 @@ ifelse a :hello :bye
 
 transpiles to
 
-```common-lisp
+```lisp
 (if a
     :hello
     :bye)
@@ -788,7 +788,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (labels ((foo (x)
            (bar (- x 1)))
          (bar (x)
@@ -806,7 +806,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (labels ((foo (x)
            (cond ((< x 0) nil) (t (foo (- x 1))))))
   (foo 42))
@@ -820,7 +820,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (labels ()
   nil)
 ```
@@ -834,7 +834,7 @@ lambda (): nil end
 
 transpiles to
 
-```common-lisp
+```lisp
 (lambda () nil)
 ```
 
@@ -846,7 +846,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (lambda (x) x)
 ```
 
@@ -860,7 +860,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (lambda (x y)
   (let ((sum (+ x y)))
     (expt sum 2)))
@@ -877,7 +877,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (let ((a 2) (b 3))
   (+ a b))
 ```
@@ -890,7 +890,7 @@ end let
 
 transpiles to
 
-```common-lisp
+```lisp
 (let ((a 2) (b 3))
   (+ a b))
 ```
@@ -905,7 +905,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (let+ ((x 42))
   x)
 ```
@@ -918,7 +918,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (let+ (((a b) (list 1 2)))
   (+ a b))
 ```
@@ -931,7 +931,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (let+ (((&values a b) (list 1 2)))
   (+ a b))
 ```
@@ -946,7 +946,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (let+ (((&values a b) (list 1 2)) ((c d e) (list 1 2 3)))
   (fill-hash-set a b c d e))
 ```
@@ -960,7 +960,7 @@ lm (): nil
 
 transpiles to
 
-```common-lisp
+```lisp
 (lambda () nil)
 ```
 
@@ -970,7 +970,7 @@ lm (x): x
 
 transpiles to
 
-```common-lisp
+```lisp
 (lambda (x) x)
 ```
 
@@ -980,7 +980,7 @@ lm (x, y): x + y
 
 transpiles to
 
-```common-lisp
+```lisp
 (lambda (x y) (+ x y))
 ```
 
@@ -993,7 +993,7 @@ loop end loop
 
 transpiles to
 
-```common-lisp
+```lisp
 (loop)
 ```
 
@@ -1005,7 +1005,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (loop :repeat n
       :do (print "hello"))
 ```
@@ -1018,7 +1018,7 @@ end
 
 transpiles to
 
-```common-lisp
+```lisp
 (loop :for i :below n
       :do (print (+ i 1)))
 ```
