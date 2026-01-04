@@ -626,7 +626,7 @@ if a: b end if
 transpiles to
 
 ```lisp
-(cond (a b) (t))
+(cond (a b) (t nil))
 ```
 
 ```moonli
@@ -638,7 +638,7 @@ end
 transpiles to
 
 ```lisp
-(cond (a b c) (t))
+(cond (a b c) (t nil))
 ```
 
 ```moonli
