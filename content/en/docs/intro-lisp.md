@@ -98,7 +98,7 @@ macros](https://www.quora.com/What-is-your-favourite-non-mainstream-programming-
 
 As with lisp, everything is an expression.
 
-Moonli's syntax can be understood in terms of a (i) Core Syntax, and (ii) Macros. The core syntax makes space for macros, and macros provide extensibility. 
+Moonli's syntax can be understood in terms of a (i) Core Syntax, and (ii) Macros. The core syntax makes space for macros, and macros provide extensibility. A third part concerns the `with`-special macros.
 
 ## Core Syntax
 
@@ -1032,7 +1032,110 @@ time length("hello world")
 
 transpiles to
 
-```common-lisp
+```lisp
 (time (length "hello world"))
 ```
 
+## with
+
+Standard Common Lisp code uses a number of `with-` macros. These can all be generated using the `with-` special macro of Moonli. This is "special" because 
+
+1. Unlike standard macros which are identified by symbols, the `with`-block is identified using the keyword "with", regardless of the package under consideration.
+
+2. `with pkg:symbol` expands into `pkg:with-symbol` without the interning of `pkg:symbol`.
+
+Example transpilations:
+
+
+```moonli
+with open-file(f, "/tmp/a.txt"):
+  f
+end
+```
+
+transpiles to
+
+```lisp
+(with-open-file (f "/tmp/a.txt") f)
+```
+
+```moonli
+with-open-file(f, "/tmp/a.txt"):
+  f
+end
+```
+
+transpiles to
+
+```lisp
+(with-open-file (f "/tmp/a.txt") f)
+```
+
+```moonli
+with output-to-string(*standard-output*),
+     open-file(f, "/tmp/a.txt"):
+  write-line(read-line(f))
+end
+```
+
+transpiles to
+
+```lisp
+(with-output-to-string (*standard-output*)
+  (with-open-file (f "/tmp/a.txt")
+    (write-line (read-line f))))
+```
+
+
+```moonli
+with alexandria:gensyms(a,b,c):
+  list(a,b,c)
+end
+```
+
+transpiles to
+
+```lisp
+(alexandria:with-gensyms (a b c)
+  (list a b c))
+```
+
+
+```moonli
+with alexandria:gensyms(a,b,c),
+     open-file(f, "/tmp/a.txt", :direction, :output):
+  write(list(a,b,c), f)
+end
+```
+
+transpiles to
+
+```lisp
+(alexandria:with-gensyms (a b c)
+  (with-open-file (f "/tmp/a.txt" :direction :output)
+    (write (list a b c) f)))
+```
+
+
+```moonli
+defstruct pair:
+  x;
+  y;
+end
+
+with access:dot():
+  let pair = make-pair(:x, 2, :y, 3):
+     format(t, "~&x + y = ~a~%", pair.x + pair.y)
+  end
+end
+```
+
+transpiles to
+
+```lisp
+(defstruct pair x y)
+
+(access:with-dot
+  (let ((pair (make-pair :x 2 :y 3)))
+    (format t "~&x + y = ~a~%" (+ pair.x pair.y))))
+```
