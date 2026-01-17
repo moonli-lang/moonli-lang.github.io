@@ -10,7 +10,7 @@ menu: {main: {weight: 15}}
 Grab a binary from the [latest
 release](https://github.com/digikar99/moonli/releases/latest). If you
 want an interactive REPL as in the above gif, grab the binaries with
-\"repl\" in their name.
+"repl" or "[ciel](https://ciel-lang.org/#/?id=ciel)" in their name.
 
 If you want to run a few moonli files, grab the regular binaries.
 
@@ -115,40 +115,48 @@ current directory, or
 
 ### Step 3. Install Moonli
 
-1.  3.1. Obtain the source
+#### 3.1. Obtain the source
 
-        git clone https://github.com/moonli-lang/moonli
+    git clone https://github.com/moonli-lang/moonli
 
-2.  3.2. Start the REPL
+#### 3.2. Start the REPL
 
-        sbcl --eval '(asdf:load-system "moonli/repl")' --eval '(cl-repl:main)'
+    sbcl --eval '(asdf:load-system "moonli/repl")' --eval '(cl-repl:main)'
 
-3.  3.3a. (Optional) Building basic binary
+Optionally, with [CIEL](https://ciel-lang.org/#/?id=ciel)
 
-    The following should create a `moonli` binary in the root
-    directory of moonli.
+    sbcl --eval '(asdf:load-system "moonli/ciel")' --eval '(cl-repl:main)'
 
-    ```common-lisp
-    (asdf:make :moonli)
-    ```
+#### 3.3a. (Optional) Building basic binary
 
-        ./moonli --help
-        A basic moonli transpiler over SBCL
-        Available options:
-          -h, --help                 Print this help text
-          -l, --load-lisp ARG        Load lisp file
-          -m, --load-moonli ARG      Load moonli file
-          -t, --transpile-moonli ARG
-                                     Transpile moonli file to lisp file
+The following should create a `moonli` binary in the root
+directory of moonli.
 
-4.  3.3b. (Optional) Build REPL
+    sbcl --eval '(asdf:make "moonli")'
 
-    The following should create a `moonli.repl` binary in
-    the root directory of moonli.
+    ./moonli --help
+    A basic moonli transpiler over SBCL
+    Available options:
+      -h, --help                 Print this help text
+      -l, --load-lisp ARG        Load lisp file
+      -m, --load-moonli ARG      Load moonli file
+      -t, --transpile-moonli ARG
+                                 Transpile moonli file to lisp file
 
-    ```common-lisp
-    (asdf:make :moonli/repl)
-    ```
+#### 3.3b. (Optional) Build REPL
+
+The following should create a `moonli.repl` binary in
+the root directory of moonli.
+
+    sbcl --eval '(asdf:make "moonli/repl")'
+
+#### 3.3c. (Optional) Build REPL with CIEL
+
+The following should create a `moonli.ciel` binary in
+the root directory of moonli.
+
+    sbcl --eval '(asdf:make "moonli/ciel")'
+
 
 ### Step 4. Set up VS Code
 
