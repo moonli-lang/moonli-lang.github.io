@@ -14,7 +14,7 @@ linkTitle: 2. Symbols, Variables, and Values
 
 A critical aspect of programming is building abstractions. The first step to such abstractions involves using *variables* to stand in for *[literal values](01-literals.md)* that we studied in the last section.
 
-Programmatically, *variables* are *symbols* that can be *eval*-uated to obtain the *value* they are bound to. You have already seen a few symbols. Below, `x` and `:i-am-a-keyword` are two symbols.
+Programmatically, *variables* are *symbols* that can be *eval*-uated to obtain the *value* they are bound to. You have already seen a few symbols. Below, `$x` and `:i-am-a-keyword` input two symbols.
 
 ```moonli
 MOONLI-USER> $x

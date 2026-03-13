@@ -279,7 +279,7 @@ Classes are perfect for flexible, evolving designs. Structures are ideal for per
 | Feature                    | Classes | Structures |
 |----------------------------|---------|------------|
 | Single inheritance         | ✅      | ✅         |
-| Multiple inheritance       | ❌      | ❌         |
+| Multiple inheritance       | ✅      | ❌         |
 | Dynamic redefinition       | ✅      | ❌         |
 | Performance                | ❌      | ✅         |
 | Use with generic functions | ✅      | ✅         |

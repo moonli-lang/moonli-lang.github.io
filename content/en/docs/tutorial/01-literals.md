@@ -12,7 +12,7 @@ linkTitle: 1. Literal Objects
 </a>
 </div>
 
-In a programming language, a literal object is something the evaluator doesn’t need to compute—it already is its own value. When the REPL reads a literal like 5, "hello", or #t, the eval step simply returns it unchanged, because it directly represents itself.
+In a programming language, a literal object is something the evaluator doesn’t need to compute—it already is its own value. When the REPL reads a literal like `5`, `"hello"`, or `t`, the eval step simply returns it unchanged, because it directly represents itself.
 
 For example, since `5` is already a number:
 
@@ -100,7 +100,7 @@ While symbols are useful for working with code, strings are useful for working w
 
 ### Characters
 
-Characters can be understood as blocks of strings. Each string is a sequence of characters. An individual character can be input to the REPL using single quotation marks.
+Characters are the building blocks of strings. Each string is a sequence of characters. An individual character can be input to the REPL using single quotation marks.
 
 ```moonli
 MOONLI-USER> 'a'
