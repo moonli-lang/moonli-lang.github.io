@@ -81,37 +81,16 @@ Once this step is successful, you should be able to type
     should be installed along with SBCL, and is also available from the
     website <http://www.sbcl.org/>.
 
-### Step 2. Install ocicl {#2-install-ocicl}
+### Step 2. Install ql-https {#2-install-ocicl}
 
-Follow the instructions at <https://github.com/ocicl/ocicl>.
+[ql-https](https://github.com/rudolfochrist/ql-https) sets up the Common Lisp library manager [quicklisp](https://www.quicklisp.org/beta/) with https support. It can be installed simply as:
 
-Briefly:
-
-- MacOS: `brew install ocicl && ocicl setup`
-- Others:
-
-<!-- -->
-
-    git clone https://github.com/ocicl/ocicl
-    cd ocicl
-    sbcl --load setup.lisp
-    ocicl setup
-
-Edit the compiler init file (eg. `~/.sbclrc`) to include the
-current directory, or
-
-```common-lisp
-#-ocicl
-(when (probe-file #P"/Users/user/.local/share/ocicl/ocicl-runtime.lisp")
-  (load #P"/Users/user/.local/share/ocicl/ocicl-runtime.lisp"))
-(asdf:initialize-source-registry
- ;; (list :source-registry
- ;;       (list :tree (uiop:strcat (uiop:getenv "HOME") "/Common Lisp/"))
- ;;       :inherit-configuration)
- (list :source-registry
-       (list :directory (uiop:getcwd))
-       :inherit-configuration))
+```sh
+export LISP=sbcl
+curl https://raw.githubusercontent.com/rudolfochrist/ql-https/master/install.sh | bash
 ```
+
+This will also edit the compiler init file (eg. `~/.sbclrc`) to load ql-https at startup.
 
 ### Step 3. Install Moonli
 
@@ -121,11 +100,11 @@ current directory, or
 
 #### 3.2. Start the REPL
 
-    sbcl --eval '(asdf:load-system "moonli/repl")' --eval '(cl-repl:main)'
+    sbcl --eval '(ql:quickload "moonli/repl")' --eval '(moonli/repl:main)'
 
 Optionally, with [CIEL](https://ciel-lang.org/#/?id=ciel)
 
-    sbcl --eval '(asdf:load-system "moonli/ciel")' --eval '(cl-repl:main)'
+    sbcl --eval '(asdf:load-system "moonli/ciel")' --eval '(moonli/repl:main)'
 
 #### 3.3a. (Optional) Building basic binary
 
@@ -158,9 +137,10 @@ the root directory of moonli.
     sbcl --eval '(asdf:make "moonli/ciel")'
 
 
-### Step 4. Set up VS Code
+### Step 4. Set up VS Code or Emacs
 
 Install [VS Code](https://vscodium.com/) or [VSCodium](https://vscodium.com/) if they are not already installed.
 
 Once the editor is installed, install the [Alive Moonli](https://marketplace.visualstudio.com/items?itemName=moonli-lang.alive-moonli) extension.
 
+If you are familiar with Emacs, you can also use [moonli-mode.el](https://github.com/moonli-lang/moonli-mode.el).
