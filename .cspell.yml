@@ -1,8 +1,10 @@
-# cSpell:ignore textlintrc
-# For settings, see
-# https://www.streetsidesoftware.com/vscode-spell-checker/docs/configuration/
 version: '0.2'
 caseSensitive: true
 words:
+  - chalin
+  - docset
   - Docsy
+  - errorf
+  - gohugoio
   - Goldydocs
+  - pageinfo
