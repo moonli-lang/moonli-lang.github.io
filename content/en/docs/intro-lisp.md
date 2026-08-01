@@ -36,31 +36,34 @@ project.
 # Table of Contents
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-
 - [Core Syntax](#core-syntax)
 - [Macros](#macros)
-    - [declaim](#declaim)
+    - [vector](#vector)
+    - [chain](#chain)
+    - [let](#let)
+    - [if](#if)
+    - [loop](#loop)
+    - [pprint-logical-block](#pprint-logical-block)
+    - [unwind-protect](#unwind-protect)
+    - [defvar](#defvar)
+    - [defparameter](#defparameter)
     - [declare](#declare)
-    - [defclass](#defclass)
+    - [declaim](#declaim)
     - [defgeneric](#defgeneric)
+    - [time](#time)
+    - [ifelse](#ifelse)
+    - [lm](#lm)
+    - [defun](#defun)
+    - [lambda](#lambda)
     - [defmethod](#defmethod)
     - [defpackage](#defpackage)
-    - [defparameter](#defparameter)
     - [defstruct](#defstruct)
-    - [deftype](#deftype)
-    - [defun](#defun)
-    - [defvar](#defvar)
-    - [for](#for)
-    - [if](#if)
-    - [ifelse](#ifelse)
-    - [in-package](#in-package)
+    - [defclass](#defclass)
     - [labels](#labels)
-    - [lambda](#lambda)
-    - [let](#let)
     - [let+](#let)
-    - [lm](#lm)
-    - [loop](#loop)
-    - [time](#time)
+    - [match](#match)
+    - [for](#for)
+    - [->](#-)
 
 <!-- markdown-toc end -->
 
@@ -125,28 +128,357 @@ Several Moonli macros are predefined as part of Moonli system, and you can add m
 
 Example transpilations for these predefined Moonli macros are given below:
 
-### declaim
+### vector
 
 ```moonli
-declaim inline(foo)
+[a, fn(a,b,c), add(a,b) + c]
 ```
 
 transpiles to
 
 ```lisp
-(declaim (inline foo))
+(vector a (fn a b c) (+ (add a b) c))
 ```
 
 ```moonli
-declaim type(hash-table, *map*)
+[add(a,b) + c]
 ```
 
 transpiles to
 
 ```lisp
-(declaim (type hash-table *map*))
+(vector (+ (add a b) c))
 ```
 
+### chain
+
+```moonli
+x[i,j]
+```
+
+transpiles to
+
+```lisp
+(aref x i j)
+```
+
+```moonli
+s[i][j]
+```
+
+transpiles to
+
+```lisp
+(aref (aref s i) j)
+```
+
+```moonli
+make-array((2,3))[i][j]
+```
+
+transpiles to
+
+```lisp
+(aref (aref (make-array (list 2 3)) i) j)
+```
+
+```moonli
+a
+```
+
+transpiles to
+
+```lisp
+a
+```
+
+```moonli
+a()
+```
+
+transpiles to
+
+```lisp
+(a)
+```
+
+```moonli
+a()[i,j]()
+```
+
+transpiles to
+
+```lisp
+(funcall (aref (a) i j))
+```
+
+```moonli
+a[i,j]
+```
+
+transpiles to
+
+```lisp
+(aref a i j)
+```
+
+```moonli
+[1,2,3][0]
+```
+
+transpiles to
+
+```lisp
+(aref (vector 1 2 3) 0)
+```
+
+### let
+
+```moonli
+let a = 2, b = 3:
+   a + b
+end
+```
+
+transpiles to
+
+```lisp
+(let ((a 2) (b 3))
+  (+ a b))
+```
+
+```moonli
+let a = 2, b = 3:
+   a + b
+end let
+```
+
+transpiles to
+
+```lisp
+(let ((a 2) (b 3))
+  (+ a b))
+```
+
+### if
+
+```moonli
+if a: b end if
+```
+
+transpiles to
+
+```lisp
+(cond (a b) (t nil))
+```
+
+```moonli
+if a:
+  b; c
+end
+```
+
+transpiles to
+
+```lisp
+(cond (a b c) (t nil))
+```
+
+```moonli
+if a: b
+else: c
+end if
+```
+
+transpiles to
+
+```lisp
+(cond (a b) (t c))
+```
+
+```moonli
+if a:
+   b; d
+else:
+   c; e
+end if
+```
+
+transpiles to
+
+```lisp
+(cond (a b d) (t c e))
+```
+
+```moonli
+if a: b
+elif c: d; e
+else: f
+end if
+```
+
+transpiles to
+
+```lisp
+(cond (a b) (c d e) (t f))
+```
+
+```moonli
+(if a: b else: c; end)::boolean
+```
+
+transpiles to
+
+```lisp
+(the boolean (cond (a b) (t c)))
+```
+
+```moonli
+if null(args): 0; else: 1 end
+```
+
+transpiles to
+
+```lisp
+(cond ((null args) 0) (t 1))
+```
+
+```moonli
+if null(args):
+    0
+else:
+    first(args)
+end if
+```
+
+transpiles to
+
+```lisp
+(cond ((null args) 0) (t (first args)))
+```
+
+```moonli
+if null(args):
+  0
+else:
+  2 + 3
+end if
+```
+
+transpiles to
+
+```lisp
+(cond ((null args) 0) (t (+ 2 3)))
+```
+
+```moonli
+if null(args):
+  0
+else:
+  first(args) + add(rest(args))
+end if
+```
+
+transpiles to
+
+```lisp
+(cond ((null args) 0) (t (+ (first args) (add (rest args)))))
+```
+
+### loop
+
+```moonli
+loop end loop
+```
+
+transpiles to
+
+```lisp
+(loop)
+```
+
+```moonli
+loop :repeat n :do
+  print("hello")
+end
+```
+
+transpiles to
+
+```lisp
+(loop :repeat n
+      :do (print "hello"))
+```
+
+```moonli
+loop :for i :below n :do
+  print(i + 1)
+end
+```
+
+transpiles to
+
+```lisp
+(loop :for i :below n
+      :do (print (+ i 1)))
+```
+
+### pprint-logical-block
+
+```moonli
+pprint-logical-block (s, nil, :per-line-prefix, "  "):
+  write(s)
+  terpri()
+end
+```
+
+transpiles to
+
+```lisp
+(pprint-logical-block (s nil :per-line-prefix "  ") (write s) (terpri))
+```
+
+### unwind-protect
+
+```moonli
+unwind-protect
+    progn
+      s = s + 2
+      fn-call(arg1, arg2)
+    end
+  s = s - 2
+end
+```
+
+transpiles to
+
+```lisp
+(unwind-protect (progn (setf s (+ s 2)) (fn-call arg1 arg2)) (setf s (- s 2)))
+```
+
+### defvar
+
+```moonli
+defvar a = 5
+```
+
+transpiles to
+
+```lisp
+(defvar a 5)
+```
+
+### defparameter
+
+```moonli
+defparameter a = 5
+```
+
+transpiles to
+
+```lisp
+(defparameter a 5)
+```
 
 ### declare
 
@@ -171,6 +503,390 @@ transpiles to
          (optimize (debug 3)))
 ```
 
+### declaim
+
+```moonli
+declaim inline(foo)
+```
+
+transpiles to
+
+```lisp
+(declaim (inline foo))
+```
+
+```moonli
+declaim type(hash-table, *map*)
+```
+
+transpiles to
+
+```lisp
+(declaim (type hash-table *map*))
+```
+
+### defgeneric
+
+```moonli
+defgeneric area(shape)
+```
+
+transpiles to
+
+```lisp
+(defgeneric area
+    (shape))
+```
+
+### time
+
+```moonli
+time length("hello world")
+```
+
+transpiles to
+
+```lisp
+(time (length "hello world"))
+```
+
+### ifelse
+
+```moonli
+ifelse a 5
+```
+
+transpiles to
+
+```lisp
+(if a
+    5
+    nil)
+```
+
+```moonli
+ifelse a :hello :bye
+```
+
+transpiles to
+
+```lisp
+(if a
+    :hello
+    :bye)
+```
+
+### lm
+
+```moonli
+lm (): nil
+```
+
+transpiles to
+
+```lisp
+(lm nil nil)
+```
+
+```moonli
+lm (x): x
+```
+
+transpiles to
+
+```lisp
+(lm (x) x)
+```
+
+```moonli
+lm (x, y): x + y
+```
+
+transpiles to
+
+```lisp
+(lm (x y) (+ x y))
+```
+
+### defun
+
+```moonli
+defun our-identity(x): x end
+```
+
+transpiles to
+
+```lisp
+(defun our-identity (x) x)
+```
+
+```moonli
+defun add (&rest, args):
+ args
+end defun
+```
+
+transpiles to
+
+```lisp
+(defun add (&rest args) args)
+```
+
+```moonli
+defun add(args):
+  if null(args):
+    0
+  else:
+    first(args) + add(rest(args))
+  end if
+end
+```
+
+transpiles to
+
+```lisp
+(defun add (args) (cond ((null args) 0) (t (+ (first args) (add (rest args))))))
+```
+
+```moonli
+defun foo(&optional, a = 5): a end
+```
+
+transpiles to
+
+```lisp
+(defun foo (&optional (a 5)) a)
+```
+
+### lambda
+
+```moonli
+lambda (): nil end
+```
+
+transpiles to
+
+```lisp
+(lambda () nil)
+```
+
+```moonli
+lambda (x):
+  x
+end
+```
+
+transpiles to
+
+```lisp
+(lambda (x) x)
+```
+
+```moonli
+lambda (x, y):
+  let sum = x + y:
+    sum ^ 2
+  end
+end
+```
+
+transpiles to
+
+```lisp
+(lambda (x y)
+  (let ((sum (+ x y)))
+    (expt sum 2)))
+```
+
+### defmethod
+
+```moonli
+defmethod our-identity(x): x end
+```
+
+transpiles to
+
+```lisp
+(defmethod our-identity (x) x)
+```
+
+```moonli
+defmethod :before our-identity(x):
+  format(t, "Returning identity~%")
+end
+```
+
+transpiles to
+
+```lisp
+(defmethod :before our-identity (x) (format t "Returning identity~%"))
+```
+
+```moonli
+defmethod :after our-identity(x):
+  format(t, "Returned identity~%")
+end
+```
+
+transpiles to
+
+```lisp
+(defmethod :after our-identity (x) (format t "Returned identity~%"))
+```
+
+```moonli
+defmethod add (x :: number, y :: number):
+ x + y
+end
+```
+
+transpiles to
+
+```lisp
+(defmethod add ((x number) (y number)) (+ x y))
+```
+
+```moonli
+defmethod add (x :: number, y :: number, &rest, others):
+  x + if null(others):
+    y
+  else:
+    apply(function(add), y, others)
+  end
+end
+```
+
+transpiles to
+
+```lisp
+(defmethod add ((x number) (y number) &rest others)
+  (+ x (cond ((null others) y) (t (apply #'add y others)))))
+```
+
+```moonli
+defmethod add (x :: number, y :: number, &rest, others):
+  x + (if null(others):
+    y
+  else:
+    apply(function(add), y, others)
+  end)
+end
+```
+
+transpiles to
+
+```lisp
+(defmethod add ((x number) (y number) &rest others)
+  (+ x (cond ((null others) y) (t (apply #'add y others)))))
+```
+
+```moonli
+defmethod add (x :: string, y):
+  uiop:strcat(x, y)
+end
+```
+
+transpiles to
+
+```lisp
+(defmethod add ((x string) y) (uiop/utility:strcat x y))
+```
+
+```moonli
+defmethod add (x :: string, y :: eql($string)):
+  concatenate(y, x)
+end
+```
+
+transpiles to
+
+```lisp
+(defmethod add ((x string) (y (eql 'string))) (concatenate y x))
+```
+
+### defpackage
+
+```moonli
+defpackage foo
+  :use cl;
+  :local-nicknames :a = :alexandria;
+end
+```
+
+transpiles to
+
+```lisp
+(defpackage foo
+  (:use cl)
+  (:local-nicknames (:a :alexandria)))
+```
+
+### defstruct
+
+```moonli
+defstruct foo:
+  a;
+  b;
+end
+```
+
+transpiles to
+
+```lisp
+(defstruct foo a b)
+```
+
+```moonli
+defstruct foo:
+  (a = 4) :: number;
+  b;
+end
+```
+
+transpiles to
+
+```lisp
+(defstruct foo (a 4 :type number) b)
+```
+
+```moonli
+defstruct foo:
+  (a = 4), :read-only = t;
+  b;
+end
+```
+
+transpiles to
+
+```lisp
+(defstruct foo (a 4 :read-only t) b)
+```
+
+```moonli
+defstruct foo:
+  (a = 4), :read-only = t;
+  (b = 2.0) :: single-float, :read-only = t;
+end
+```
+
+transpiles to
+
+```lisp
+(defstruct foo (a 4 :read-only t) (b 2.0 :type single-float :read-only t))
+```
+
+```moonli
+defstruct foo:
+  a = 4;
+  b = 2.0;
+end
+```
+
+transpiles to
+
+```lisp
+(defstruct foo (a 4) (b 2.0))
+```
 
 ### defclass
 
@@ -314,465 +1030,6 @@ transpiles to
           (:documentation "Two dimensional points."))
 ```
 
-
-### defgeneric
-
-```moonli
-defgeneric area(shape)
-```
-
-transpiles to
-
-```lisp
-(defgeneric area
-    (shape))
-```
-
-
-### defmethod
-
-```moonli
-defmethod our-identity(x): x end
-```
-
-transpiles to
-
-```lisp
-(defmethod our-identity (x) x)
-```
-
-```moonli
-defmethod :before our-identity(x):
-  format(t, "Returning identity~%")
-end
-```
-
-transpiles to
-
-```lisp
-(defmethod :before our-identity (x) (format t "Returning identity~%"))
-```
-
-```moonli
-defmethod :after our-identity(x):
-  format(t, "Returned identity~%")
-end
-```
-
-transpiles to
-
-```lisp
-(defmethod :after our-identity (x) (format t "Returned identity~%"))
-```
-
-```moonli
-defmethod add (x :: number, y :: number):
- x + y
-end
-```
-
-transpiles to
-
-```lisp
-(defmethod add ((x number) (y number)) (+ x y))
-```
-
-```moonli
-defmethod add (x :: number, y :: number, &rest, others):
-  x + if null(others):
-    y
-  else:
-    apply(function(add), y, others)
-  end
-end
-```
-
-transpiles to
-
-```lisp
-(defmethod add ((x number) (y number) &rest others)
-  (+ x (cond ((null others) y) (t (apply #'add y others)))))
-```
-
-```moonli
-defmethod add (x :: number, y :: number, &rest, others):
-  x + (if null(others):
-    y
-  else:
-    apply(function(add), y, others)
-  end)
-end
-```
-
-transpiles to
-
-```lisp
-(defmethod add ((x number) (y number) &rest others)
-  (+ x (cond ((null others) y) (t (apply #'add y others)))))
-```
-
-```moonli
-defmethod add (x :: string, y):
-  uiop:strcat(x, y)
-end
-```
-
-transpiles to
-
-```lisp
-(defmethod add ((x string) y) (uiop/utility:strcat x y))
-```
-
-
-### defpackage
-
-```moonli
-defpackage foo
-  :use cl;
-end
-```
-
-transpiles to
-
-```lisp
-(defpackage foo
-  (:use cl))
-```
-
-
-### defparameter
-
-```moonli
-defparameter a = 5
-```
-
-transpiles to
-
-```lisp
-(defparameter a 5)
-```
-
-
-### defstruct
-
-```moonli
-defstruct foo:
-  a;
-  b;
-end
-```
-
-transpiles to
-
-```lisp
-(defstruct foo a b)
-```
-
-```moonli
-defstruct foo:
-  (a = 4) :: number;
-  b;
-end
-```
-
-transpiles to
-
-```lisp
-(defstruct foo (a 4 :type number) b)
-```
-
-```moonli
-defstruct foo:
-  (a = 4), :read-only = t;
-  b;
-end
-```
-
-transpiles to
-
-```lisp
-(defstruct foo (a 4 :read-only t) b)
-```
-
-```moonli
-defstruct foo:
-  (a = 4), :read-only = t;
-  (b = 2.0) :: single-float, :read-only = t;
-end
-```
-
-transpiles to
-
-```lisp
-(defstruct foo (a 4 :read-only t) (b 2.0 :type single-float :read-only t))
-```
-
-```moonli
-defstruct foo:
-  a = 4;
-  b = 2.0;
-end
-```
-
-transpiles to
-
-```lisp
-(defstruct foo (a 4) (b 2.0))
-```
-
-
-### deftype
-
-
-### defun
-
-```moonli
-defun our-identity(x): x end
-```
-
-transpiles to
-
-```lisp
-(defun our-identity (x) x)
-```
-
-```moonli
-defun add (&rest, args):
- args
-end defun
-```
-
-transpiles to
-
-```lisp
-(defun add (&rest args) args)
-```
-
-```moonli
-defun add(args):
-  if null(args):
-    0
-  else:
-    first(args) + add(rest(args))
-  end if
-end
-```
-
-transpiles to
-
-```lisp
-(defun add (args) (cond ((null args) 0) (t (+ (first args) (add (rest args))))))
-```
-
-```moonli
-defun foo(&optional, a = 5): a end
-```
-
-transpiles to
-
-```lisp
-(defun foo (&optional (a 5)) a)
-```
-
-
-### defvar
-
-```moonli
-defvar a = 5
-```
-
-transpiles to
-
-```lisp
-(defvar a 5)
-```
-
-
-### for
-
-```moonli
-for:for (i,j) in ((1,2),(3,4)):
-  print(i + j)
-end
-```
-
-transpiles to
-
-```lisp
-(for-minimal:for (((i j) in (list (list 1 2) (list 3 4))))
-  (print (+ i j)))
-```
-
-```moonli
-for:for i in (1,2,3), j in (2,3,4):
-  print(i + j)
-end
-```
-
-transpiles to
-
-```lisp
-(for-minimal:for ((i in (list 1 2 3)) (j in (list 2 3 4)))
-  (print (+ i j)))
-```
-
-
-### if
-
-```moonli
-if a: b end if
-```
-
-transpiles to
-
-```lisp
-(cond (a b) (t nil))
-```
-
-```moonli
-if a:
-  b; c
-end
-```
-
-transpiles to
-
-```lisp
-(cond (a b c) (t nil))
-```
-
-```moonli
-if a: b
-else: c
-end if
-```
-
-transpiles to
-
-```lisp
-(cond (a b) (t c))
-```
-
-```moonli
-if a:
-   b; d
-else:
-   c; e
-end if
-```
-
-transpiles to
-
-```lisp
-(cond (a b d) (t c e))
-```
-
-```moonli
-if a: b
-elif c: d; e
-else: f
-end if
-```
-
-transpiles to
-
-```lisp
-(cond (a b) (c d e) (t f))
-```
-
-```moonli
-(if a: b else: c; end)::boolean
-```
-
-transpiles to
-
-```lisp
-(the boolean (cond (a b) (t c)))
-```
-
-```moonli
-if null(args): 0; else: 1 end
-```
-
-transpiles to
-
-```lisp
-(cond ((null args) 0) (t 1))
-```
-
-```moonli
-if null(args):
-    0
-else:
-    first(args)
-end if
-```
-
-transpiles to
-
-```lisp
-(cond ((null args) 0) (t (first args)))
-```
-
-```moonli
-if null(args):
-  0
-else:
-  2 + 3
-end if
-```
-
-transpiles to
-
-```lisp
-(cond ((null args) 0) (t (+ 2 3)))
-```
-
-```moonli
-if null(args):
-  0
-else:
-  first(args) + add(rest(args))
-end if
-```
-
-transpiles to
-
-```lisp
-(cond ((null args) 0) (t (+ (first args) (add (rest args)))))
-```
-
-
-### ifelse
-
-```moonli
-ifelse a 5
-```
-
-transpiles to
-
-```lisp
-(if a
-    5
-    nil)
-```
-
-```moonli
-ifelse a :hello :bye
-```
-
-transpiles to
-
-```lisp
-(if a
-    :hello
-    :bye)
-```
-
-
-### in-package
-
-
 ### labels
 
 ```moonli
@@ -824,77 +1081,6 @@ transpiles to
 (labels ()
   nil)
 ```
-
-
-### lambda
-
-```moonli
-lambda (): nil end
-```
-
-transpiles to
-
-```lisp
-(lambda () nil)
-```
-
-```moonli
-lambda (x):
-  x
-end
-```
-
-transpiles to
-
-```lisp
-(lambda (x) x)
-```
-
-```moonli
-lambda (x, y):
-  let sum = x + y:
-    sum ^ 2
-  end
-end
-```
-
-transpiles to
-
-```lisp
-(lambda (x y)
-  (let ((sum (+ x y)))
-    (expt sum 2)))
-```
-
-
-### let
-
-```moonli
-let a = 2, b = 3:
-   a + b
-end
-```
-
-transpiles to
-
-```lisp
-(let ((a 2) (b 3))
-  (+ a b))
-```
-
-```moonli
-let a = 2, b = 3:
-   a + b
-end let
-```
-
-transpiles to
-
-```lisp
-(let ((a 2) (b 3))
-  (+ a b))
-```
-
 
 ### let+
 
@@ -951,191 +1137,186 @@ transpiles to
   (fill-hash-set a b c d e))
 ```
 
-
-### lm
-
-```moonli
-lm (): nil
-```
-
-transpiles to
-
-```lisp
-(lambda () nil)
-```
+### match
 
 ```moonli
-lm (x): x
-```
-
-transpiles to
-
-```lisp
-(lambda (x) x)
-```
-
-```moonli
-lm (x, y): x + y
-```
-
-transpiles to
-
-```lisp
-(lambda (x y) (+ x y))
-```
-
-
-### loop
-
-```moonli
-loop end loop
-```
-
-transpiles to
-
-```lisp
-(loop)
-```
-
-```moonli
-loop :repeat n :do
-  print("hello")
+optima:match 5:
+  list(_) : 42;
+  sym : sym;
 end
 ```
 
 transpiles to
 
 ```lisp
-(loop :repeat n
-      :do (print "hello"))
+(optima:match 5
+  ((list _) 42)
+  (sym sym))
 ```
 
 ```moonli
-loop :for i :below n :do
-  print(i + 1)
+optima:match (2,3,4):
+  list(x, y, z) : x + y + z;
+  sym : sym;
 end
 ```
 
 transpiles to
 
 ```lisp
-(loop :for i :below n
-      :do (print (+ i 1)))
+(optima:match (list 2 3 4)
+  ((list x y z) (+ (+ x y) z))
+  (sym sym))
 ```
-
-
-### time
 
 ```moonli
-time length("hello world")
-```
-
-transpiles to
-
-```lisp
-(time (length "hello world"))
-```
-
-## with
-
-Standard Common Lisp code uses a number of `with-` macros. These can all be generated using the `with-` special macro of Moonli. This is "special" because 
-
-1. Unlike standard macros which are identified by symbols, the `with`-block is identified using the keyword "with", regardless of the package under consideration.
-
-2. `with pkg:symbol` expands into `pkg:with-symbol` without the interning of `pkg:symbol`.
-
-Example transpilations:
-
-
-```moonli
-with open-file(f, "/tmp/a.txt"):
-  f
+optima:match [2,3,4]:
+  vector(x, y, z) : x + y + z;
+  sym : sym;
 end
 ```
 
 transpiles to
 
 ```lisp
-(with-open-file (f "/tmp/a.txt") f)
+(optima:match (vector 2 3 4)
+  ((vector x y z) (+ (+ x y) z))
+  (sym sym))
 ```
 
 ```moonli
-with-open-file(f, "/tmp/a.txt"):
-  f
+optima:match [2,3,(42,"hello world")]:
+  vector(x, y, list(num, _)) : x + y + num;
+  sym : sym;
 end
 ```
 
 transpiles to
 
 ```lisp
-(with-open-file (f "/tmp/a.txt") f)
+(optima:match (vector 2 3 (list 42 "hello world"))
+  ((vector x y (list num _)) (+ (+ x y) num))
+  (sym sym))
 ```
 
+### for
+
 ```moonli
-with output-to-string(*standard-output*),
-     open-file(f, "/tmp/a.txt"):
-  write-line(read-line(f))
+for:for (i,j) in ((1,2),(3,4)):
+  print(i + j)
 end
 ```
 
 transpiles to
 
 ```lisp
-(with-output-to-string (*standard-output*)
-  (with-open-file (f "/tmp/a.txt")
-    (write-line (read-line f))))
+(for-minimal:for (((i j) in (list (list 1 2) (list 3 4))))
+  (print (+ i j)))
 ```
 
-
 ```moonli
-with alexandria:gensyms(a,b,c):
-  list(a,b,c)
+for:for i in (1,2,3), j in (2,3,4):
+  print(i + j)
 end
 ```
 
 transpiles to
 
 ```lisp
-(alexandria:with-gensyms (a b c)
-  (list a b c))
+(for-minimal:for ((i in (list 1 2 3)) (j in (list 2 3 4)))
+  (print (+ i j)))
 ```
 
+### ->
 
 ```moonli
-with alexandria:gensyms(a,b,c),
-     open-file(f, "/tmp/a.txt", :direction, :output):
-  write(list(a,b,c), f)
-end
+t -> format("hello")
 ```
 
 transpiles to
 
 ```lisp
-(alexandria:with-gensyms (a b c)
-  (with-open-file (f "/tmp/a.txt" :direction :output)
-    (write (list a b c) f)))
+(binding-arrows:->
+  t
+  (format "hello"))
 ```
 
-
 ```moonli
-defstruct pair:
-  x;
-  y;
-end
-
-with access:dot():
-  let pair = make-pair(:x, 2, :y, 3):
-     format(t, "~&x + y = ~a~%", pair.x + pair.y)
-  end
-end
+t -> identity() or 42
 ```
 
 transpiles to
 
 ```lisp
-(defstruct pair x y)
+(or
+ (binding-arrows:->
+   t
+   (identity))
+ 42)
+```
 
-(access:with-dot
-  (let ((pair (make-pair :x 2 :y 3)))
-    (format t "~&x + y = ~a~%" (+ pair.x pair.y))))
+```moonli
+t -> identity() and 42
+```
+
+transpiles to
+
+```lisp
+(and
+ (binding-arrows:->
+   t
+   (identity))
+ 42)
+```
+
+```moonli
+t -> identity() and - 42
+```
+
+transpiles to
+
+```lisp
+(and
+ (binding-arrows:->
+   t
+   (identity))
+ (- 42))
+```
+
+```moonli
+-2 -> add(3)
+```
+
+transpiles to
+
+```lisp
+(binding-arrows:->
+  -2
+  (add 3))
+```
+
+```moonli
+- (3 + 4) -> add(3)
+```
+
+transpiles to
+
+```lisp
+(binding-arrows:->
+  (- (+ 3 4))
+  (add 3))
+```
+
+```moonli
+- 4 -> add(3) ^ 2
+```
+
+transpiles to
+
+```lisp
+(expt
+ (binding-arrows:->
+   (- 4)
+   (add 3))
+ 2)
 ```
