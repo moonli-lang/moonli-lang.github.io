@@ -21,27 +21,30 @@ Starting Moonli either using the included binary or using VS Code will start a R
 MOONLI-USER> 
 ```
 
-A REPL is how many interactive programming languages work. It’s a simple cycle: the computer reads what you type, *evaluates* it (figures out what it means and runs it), prints the result, and then loops back to wait for your next command. For example, if you type `2 + 3` in the REPL, it reads the expression, *evaluates* it to get `5`, prints that result, and waits for more input.
+A REPL is how many interactive programming languages work. It’s a simple cycle: the computer reads what you type, *evaluates* it (figures out what it means and runs it), prints the result, and then loops back to wait for your next command. For example, if you type `defparameter x = 5` in the REPL, it evaluates it. It binds the variable `x` to the value `5`.
 
 ```moonli
-MOONLI-USER> 2 + 3
-[OUT]: 5
+MOONLI-USER> defparameter x = 5
+[OUT]: x
 
 MOONLI-USER> 
 ```
 
+Next, if you type `x`, it evaluates `x` to return the value `5`.
+
+```moonli
+MOONLI-USER> x
+[OUT]: 5
+```
+
 This loop makes programming feel conversational -- you can test ideas instantly, explore code step by step, and see exactly how the language thinks and responds.
 
-For any input expression, you can prevent *evaluation* by prefixing it with `$`. This is known as `quote`-ing.
+For any input, you can prevent *evaluation* by prefixing it with `$`. This is known as `quote`-ing.
 
 ```moonli
 MOONLI-USER> $x
 [OUT]: x
-MOONLI-USER> $(1 + 2)
-[OUT]: (+ 1 2)
 ```
-
-Note that for `$(1 + 2)`, even though evaluation has been avoided, the expression is printed as it appears to Moonli internally, just before the step of evaluation. What you type at the REPL is converted to an internal representation that Moonli can then work with.
 
 <div class="tutorial-nav">
 <a class="tutorial-prev">
