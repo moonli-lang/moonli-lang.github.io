@@ -1,6 +1,7 @@
 ---
 title: 1. Literal Objects
 linkTitle: 1. Literal Objects
+weight: 11
 ---
 
 <div class="tutorial-nav">

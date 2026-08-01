@@ -1,6 +1,7 @@
 ---
 title: 2. Symbols, Variables, and Values
 linkTitle: 2. Symbols, Variables, and Values
+weight: 12
 ---
 
 <div class="tutorial-nav">

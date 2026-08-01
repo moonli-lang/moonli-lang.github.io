@@ -1,6 +1,7 @@
 ---
 title: 9. Miscellaneous
 linkTitle: 9. Miscellaneous
+weight: 19
 ---
 
 <div class="tutorial-nav">

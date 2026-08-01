@@ -1,6 +1,7 @@
 ---
 title: 0. Evaluation
 linkTitle: 0. Evaluation
+weight: 10
 ---
 
 <div class="tutorial-nav">

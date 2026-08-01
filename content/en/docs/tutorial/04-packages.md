@@ -1,6 +1,7 @@
 ---
 title: 4. Packages and Namespaces
 linkTitle: 4. Packages and Namespaces
+weight: 14
 ---
 
 <div class="tutorial-nav">

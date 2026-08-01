@@ -1,6 +1,7 @@
 ---
 title: 8. Types, Classes and Structures
 linkTitle: 8. Types, Classes and Structures
+weight: 18
 ---
 
 <div class="tutorial-nav">

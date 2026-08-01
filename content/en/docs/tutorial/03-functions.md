@@ -1,6 +1,7 @@
 ---
 title: 3. Functions and Abstractions
 linkTitle: 3. Functions and Abstractions
+weight: 13
 ---
 
 <div class="tutorial-nav">

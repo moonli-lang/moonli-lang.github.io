@@ -1,6 +1,7 @@
 ---
 title: 7. Structures and Performance
 linkTitle: 7. Structures and Performance
+weight: 17
 ---
 
 <div class="tutorial-nav">

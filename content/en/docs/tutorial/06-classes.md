@@ -1,6 +1,7 @@
 ---
 title: 6. Classes and Methods
 linkTitle: 6. Classes and Methods
+weight: 16
 ---
 
 <div class="tutorial-nav">
