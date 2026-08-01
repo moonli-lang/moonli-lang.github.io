@@ -228,7 +228,7 @@ Python supports default arguments (`def f(x, y=0)`), keyword arguments (`f(y=1, 
 
 `&optional` parameters are positional with a default value. They must come after all required parameters:
 
-```
+```moonli
 defun greet(&optional, name = "World"):
   format(nil, "Hello, ~a!", name)
 end
@@ -239,7 +239,7 @@ greet("Moonli")  # => "Hello, Moonli!"
 
 `&key` parameters are passed by name (analogous to Python's keyword arguments). They can be supplied in any order, each may have a default value, which is `nil` if unspecified:
 
-```
+```moonli
 defun make-window(&key, width = 800, height = 600, title = "Untitled"):
   format(nil, "~a (~ax~a)", title, width, height)
 end
@@ -250,7 +250,7 @@ make-window(:title, "Editor", :width, 1280) # => "Editor (1280x600)"
 
 `&rest` collects all remaining positional arguments into a list, just like Python's `*args`:
 
-```
+```moonli
 defun sum(&rest, args):
   if null(args):
     0
@@ -265,7 +265,7 @@ sum()            # => 0
 
 These can be combined in a single function. Required parameters come first, then `&optional`, then `&rest`, then `&key`:
 
-```
+```moonli
 defun log-message(level, &rest, parts):
   format(t, "[~a] ~{~a ~}~%", level, parts)
 end
@@ -286,7 +286,7 @@ Moonli (following Common Lisp) is different: a symbol has several distinct *cell
 
 This means the same symbol `point` can simultaneously be a variable, a function, and a class, each looked up independently depending on context:
 
-```
+```moonli
 # Define a class named point
 defclass point():
   slots:
@@ -311,7 +311,7 @@ end
 
 To explicitly refer to the *function* stored in a symbol's function cell (for example, to pass it as a value), you use `function(...)` (or even the quote `$`):
 
-```
+```moonli
 mapcar(function(point-x), (point(1,2), point(3,4), point(5,6)))
 # => (1 3 5)
 mapcar($point-x, (point(1,2), point(3,4), point(5,6)))
@@ -332,33 +332,33 @@ Moonli (and Common Lisp) have two kinds of callables. **Functions** work exactly
 
 Consider `boundp`. It is a plain function. Its job is to check whether a symbol object is bound to a value. If you write `boundp(x)` without the quote, Moonli evaluates `x` first, getting its value (say, `42`), and passes `42` to `boundp`. But `boundp` expects a symbol, not an integer -- hence the error. The `$` quote prevents evaluation, so `boundp($x)` passes the symbol `x` itself:
 
-```
+```moonli
 defparameter *x* = 42
 
-boundp(*x*)   ; ERROR -- evaluates *x* to 42, then asks if 42 is a bound symbol
-boundp($*x*)  ; => t -- passes the symbol *x* itself to boundp
+boundp(*x*)   # ERROR -- evaluates *x* to 42, then asks if 42 is a bound symbol
+boundp($*x*)  # => t -- passes the symbol *x* itself to boundp
 ```
 
 The same logic applies to `makunbound`, `symbol-package`, `find-class`, and `class-of` when called with a symbol you want to introspect rather than evaluate:
 
-```
-symbol-package($list)     ; => #<package "COMMON-LISP">
-symbol-package(list)      ; ERROR -- list evaluates to the list function object, not a symbol
+```moonli
+symbol-package($list)     # => #<package "COMMON-LISP">
+symbol-package(list)      # ERROR -- list evaluates to the list function object, not a symbol
 
-find-class($rectangle)    ; => #<standard-class rectangle>
-class-of($rectangle)      ; => #<built-in-class symbol>  (the symbol itself is just a symbol)
-class-of(make-instance($rectangle, :height, 3, :breadth, 4))  ; => #<standard-class rectangle>
+find-class($rectangle)    # => #<standard-class rectangle>
+class-of($rectangle)      # => #<built-in-class symbol>  (the symbol itself is just a symbol)
+class-of(make-instance($rectangle, :height, 3, :breadth, 4))  # => #<standard-class rectangle>
 ```
 
 Now contrast this with `function` (or even `in-package`). These are **special forms**. They receive their arguments unevaluated by design, which is exactly why you can write `function(point-x)` without quoting `point-x` -- the special form `function` sees the raw symbol `point-x` . You can even write `defparameter` as a function, by writing `defparameter($*x*, 42)`. In fact, all lisp forms can be written as either atoms or function calls!
 
-```
-; defun is a macro -- it sees the symbol add and the parameter list unevaluated
+```moonli
+# defun is a macro -- it sees the symbol add and the parameter list unevaluated
 defun add(x, y):
   x + y
 end
 
-; in-package is a macro -- it sees the symbol tutorial unevaluated
+# in-package is a macro -- it sees the symbol tutorial unevaluated
 in-package tutorial
 ```
 
@@ -395,7 +395,7 @@ In Python, sharing or reusing code across projects is done via packages managed 
 Here is an example `.asd` file for a project called `my-awesome-lib`:
 
 ```lisp
-;;; my-awesome-lib.asd
+### my-awesome-lib.asd
 (defsystem "my-awesome-lib"
   :version "0.1.0"
   :author "Your Name <you@example.com>"
@@ -632,7 +632,10 @@ describe(*r*)
 # Redefine shape to add a label slot
 defclass shape():
   slots:
-    color:  ...; end
+    color:
+      initarg: :color,
+      accessor: color,
+      initform: :black;
     label:
       initarg: :label,
       accessor: label,
@@ -784,45 +787,45 @@ The reason there are several is that "sameness" is genuinely ambiguous. Are two 
 `eq` is the strictest notion: two objects are `eq` if and only if they are the *exact same object in memory* -- identical in the sense of pointer equality. This is Moonli's equivalent of Python's `is`. It is fast (a single pointer comparison) but narrow. Symbols with the same name in the same package are always `eq` to each other, because Moonli interns them -- there is only ever one object for each symbol name. Numbers and strings, however, are generally not `eq` even if they look identical, because the runtime may create separate objects for each:
 
 ```
-eq($hello, $hello)    ; => t   -- same interned symbol object
-eq(1, 1)              ; => t   -- small integers are often cached
-eq("hi", "hi")        ; => nil -- two separate string objects
+eq($hello, $hello)    # => t   -- same interned symbol object
+eq(1, 1)              # => t   -- small integers are often cached
+eq("hi", "hi")        # => nil -- two separate string objects
 ```
 
 `eql` extends `eq` to cover numbers and characters by value, while still being stricter than general structural equality. Two numbers are `eql` if they have the same type *and* the same value; `5` and `5.0` are not `eql` because they are of different types. This is the default equality used inside `case` expressions and hash tables:
 
 ```
-eql(1, 1)       ; => t
-eql(1, 1.0)     ; => nil -- same mathematical value, but different types
-eql('a', 'a')   ; => t   -- characters with the same code
-eql("hi", "hi") ; => nil -- strings are not compared by value with eql
+eql(1, 1)       # => t
+eql(1, 1.0)     # => nil -- same mathematical value, but different types
+eql('a', 'a')   # => t   -- characters with the same code
+eql("hi", "hi") # => nil -- strings are not compared by value with eql
 ```
 
 `equal` is the most commonly useful general-purpose equality, similar in spirit to Python's `==`. It compares objects *structurally* and recursively: two lists are `equal` if they have the same length and every corresponding element is `equal`; two strings are `equal` if they contain the same characters in the same order. It does not, however, smooth over type differences in numbers:
 
 ```
-equal("hello", "hello")        ; => t
-equal((1, 2, 3), (1, 2, 3))    ; => t   -- same structure
-equal((1, (2, 3)), (1, (2, 3))); => t   -- recursive
-equal(1, 1.0)                  ; => nil -- different numeric types
+equal("hello", "hello")        # => t
+equal((1, 2, 3), (1, 2, 3))    # => t   -- same structure
+equal((1, (2, 3)), (1, (2, 3)))# => t   -- recursive
+equal(1, 1.0)                  # => nil -- different numeric types
 ```
 
 `equalp` is the most permissive predicate. It is like `equal` but additionally ignores case in strings and characters, and considers numbers equal if they represent the same mathematical value regardless of type. Think of it as "equal up to superficial presentation differences":
 
 ```
-equalp("Hello", "hello")    ; => t   -- case-insensitive
-equalp(1, 1.0)              ; => t   -- same mathematical value
-equalp((1, 2), (1, 2))      ; => t
+equalp("Hello", "hello")    # => t   -- case-insensitive
+equalp(1, 1.0)              # => t   -- same mathematical value
+equalp((1, 2), (1, 2))      # => t
 ```
 
 Beyond these four, there are type-specific equality predicates for situations where you want to be explicit about what you are comparing. `string=` compares strings character-by-character (case-sensitive, like `equal` for strings), while `string-equal` is the case-insensitive version. `char=` compares characters exactly, and `char-equal` ignores case:
 
 ```
-string=("Hello", "hello")      ; => nil
-string-equal("Hello", "hello") ; => t
+string=("Hello", "hello")      # => nil
+string-equal("Hello", "hello") # => t
 
-char=('A', 'a')      ; => nil
-char-equal('A', 'a') ; => t
+char=('A', 'a')      # => nil
+char-equal('A', 'a') # => t
 ```
 
 In fact, `=`, `string=`, `char=` will even type error if their arguments are not numbers, strings, and characters respectively!
