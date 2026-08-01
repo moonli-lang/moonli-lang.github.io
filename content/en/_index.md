@@ -164,6 +164,10 @@ You can skip the tutorial, and directly see <a href="/docs/intro-lisp/">example 
 See the <a href="/docs/tutorial/">tutorial for Moonli</a>!
 {{% /blocks/feature %}}
 
+{{% blocks/feature icon="fa fa-none" title="Want to discuss Moonli?" %}}
+Join <a href="https://web.matrix-for-lispers.net/home/%23moonli%3Amatrix-for-lispers.net">#moonli:matrix-for-lispers.net</a> or start a <a href="https://github.com/moonli-lang/moonli/discussions">discussion</a>!
+{{% /blocks/feature %}}
+
 {{% /blocks/section %}}
 
 
