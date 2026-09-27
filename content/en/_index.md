@@ -6,13 +6,55 @@ title: The Moonli Programming Language
 <a class="btn btn-lg btn-primary me-3 mb-4" href="/docs/">
   Learn More <i class="fas fa-arrow-alt-circle-right ms-2"></i>
 </a>
-<a class="btn btn-lg btn-primary me-3 mb-4" href="https://github.com/moonli-lang/moonli">
+<a class="btn btn-lg btn-secondary me-3 mb-4" href="https://github.com/moonli-lang/moonli">
   Source Code <i class="fab fa-github ms-2"></i>
 </a>
 <br/>
-<a class="btn btn-lg btn-secondary me-3 mb-4" href="https://github.com/moonli-lang/moonli/releases/latest">
-  Download <i class="fas fa-arrow-alt-circle-down ms-2 "></i>
-</a>
+
+<!-- ==================== Binary picker ==================== -->
+<div id="moonli-binary-picker" class="mx-auto mb-4" style="max-width: 720px;">
+  <div class="row g-3 justify-content-center">
+    <div class="col-auto">
+      <select id="moonli-os" class="form-select">
+        <option value="linux">Linux</option>
+        <option value="darwin">MacOS</option>
+        <option value="windows">Windows</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <select id="moonli-variant" class="form-select">
+        <option value="repl">with curated libraries</option>
+        <option value="ciel">with CIEL libraries</option>
+        <option value="basic">basic</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <select id="moonli-arch" class="form-select">
+        <option value="x86_64">x86_64 (Intel/AMD)</option>
+        <option value="arm64">arm64 (Apple Silicon, Snapdragon etc)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <a id="moonli-download-link"
+       class="btn btn-lg btn-primary me-3 mb-2"
+       href="#" target="_blank" rel="noopener">
+      Download <span id="moonli-download-filename"></span>
+      <i class="fas fa-arrow-alt-circle-down ms-2"></i>
+    </a>
+  </div>
+  <div id="moonli-download-fallback" class="small text-muted" style="display:none;">
+    No prebuilt binary for this combination yet —
+    <a href="https://github.com/moonli-lang/moonli/releases/latest" target="_blank" rel="noopener">
+      see all release assets
+    </a>.
+  </div>
+</div>
+
+<script src="index.js"></script>
+<!-- ==================== /Binary picker ==================== -->
+
 {{% blocks/lead color="tertiary" %}}
 
 Moonli is a transpiler
@@ -140,7 +182,7 @@ The syntax for Moonli is based around Python or Julia. This means it should be a
 
 {{% blocks/feature icon="fa fa-none" title="Extensible" %}}
 <p style="text-align:justify">
-Moonli syntax is defined using Parsing Expression Grammar. The resulting grammar has two entry points to extend Moonli syntax. This makes it easy to extend Moonli to your favorite Common Lisp construct!
+Moonli syntax is defined using Parsing Expression Grammar. The resulting grammar has three entry points to extend Moonli syntax. This makes it easy to extend Moonli to your favorite Common Lisp construct!
 <p>
 {{% /blocks/feature %}}
 
