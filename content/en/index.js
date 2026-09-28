@@ -3,7 +3,7 @@
 
     var MATRIX = {
         "linux|x86_64|repl": "moonli-v0.0.10.repl.linux.x86_64.bin",
-        "linux|arm64|repl":  "moonli-v0.0.10.repl.linux.arm64.bin",
+        "linux|arm64|repl":  "moonli-v0.0.10.repl.linux.aarch64.bin",
         "linux|x86_64|ciel": "moonli-v0.0.10.ciel.linux.x86_64.bin",
         "linux|arm64|ciel":  "moonli-v0.0.10.ciel.linux.aarch64.bin",
         "linux|x86_64|basic": "moonli-v0.0.10.linux.x86_64.bin",
