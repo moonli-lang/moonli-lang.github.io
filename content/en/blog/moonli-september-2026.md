@@ -14,6 +14,8 @@ description: Updates about Moonli v0.0.10
 - [2. More helpful error messages](#2-more-helpful-error-messages)
 - [3. There are no symbols at the terminal](#3-there-are-no-symbols-at-the-terminal)
 - [4. Curated libraries](#4-curated-libraries)
+- [5. `help`](#5-help)
+- [6. `docsearch`](#6-docsearch)
 
 <!-- markdown-toc end -->
 
@@ -146,11 +148,11 @@ And indeed, you can load lisp or moonli files or libraries prior to `--funcall`!
 
 Last but not the least.
 
-A big advantage of Moonli is that you can simply use Common Lisp libraries. And while there aren't *that much*, there are [lots of useful ones](https://github.com/CodyReichert/awesome-cl). However, scavenging for libraries can be difficult. 
+A big advantage of Moonli is that you can simply use Common Lisp libraries. And while there aren't *that much*, there are [lots of useful ones](https://github.com/CodyReichert/awesome-cl). However, scavenging for libraries can be difficult.
 
 One approach is [CIEL](https://github.com/ciel-lang/CIEL) (see [here](https://github.com/ciel-lang/ciel-libraries/releases) for libraries). As much as I appreciate the effort, I have my own peculiarities, so I'm not exactly happy with the library selection.
 
-But now, there is another collection! I wanted to mirror the [Python standard-library](https://docs.python.org/3/library/index.html), which is an ambituous goal in itself. But here's where we start. However, many of these rely on foreign-libraries, so if you use the moonli binary, these may not work as expected! Perhaps, some day in the future, all those foreign libraries become statically baked into the lisp image :). 
+But now, there is another collection! I wanted to mirror the [Python standard-library](https://docs.python.org/3/library/index.html), which is an ambituous goal in itself. But here's where we start. However, many of these rely on foreign-libraries, so if you use the moonli binary, these may not work as expected! Perhaps, some day in the future, all those foreign libraries become statically baked into the lisp image :).
 
 ```lisp
 ;; Threading
@@ -277,6 +279,93 @@ But now, there is another collection! I wanted to mirror the [Python standard-li
 
 ;; Unix Specific
 (:feature (:not :windows) "osicat") ; apparantly, it's supposed to work on windows, but it does not, not out of the box anyways
+```
+
+### 5. `help`
+
+Example: *How do you look up a function's documentation in lisp when you are not using emacs? Eh, either use `describe` or `documentation`.*
+
+*Ugh, so verbose.*
+
+Duh, we should just define `help` that macroexpands to `describe`.
+
+```moonli
+MOONLI-USER> help(describe)
+describe
+  [symbol]
+
+describe names a compiled function:
+  Lambda-list: (object, &optional,
+                (stream-designator, *standard-output*))
+  Declared type: (function, (t, &optional, (or, stream, boolean)),
+                  (values, &optional))
+  Documentation:
+
+    Print a description of OBJECT to STREAM-DESIGNATOR.
+
+  Known attributes: unwind, any
+  Source file: SYS:SRC;CODE;DESCRIBE.LISP
+#=>
+```
+
+### 6. `docsearch`
+
+Example: *How do I read a json file?*
+
+```moonli
+MOONLI-USER> docsearch("json")
+ .
+ .
+ .
+SHASHT:READ-JSON
+  Function:
+    Read a JSON value. Reading is influenced by the dynamic variables
+    *read-default-true-value*, *read-default-false-value*, *read-default-null-value*,
+    *read-default-array-format*, *read-default-object-format*, *read-hash-table-test* and
+    common-lisp:*read-default-float-format* which each determine the default values
+    and formats used. The following arguments also control the behavior of the read.
+
+    * input-stream-or-string - a stream, a string or t. If t is passed then
+      *standard-input* is used.
+    * eof-error-p - if true signal eof with error, otherwise return eof-value.
+    * eof-value - value used if eof-error-p is nil.
+    * single-value-p - Check for trailing junk after read is complete.
+ .
+ .
+ .
+MOONLI-USER> help(shasht:read-json)
+read-json
+  [symbol]
+
+read-json names a compiled function:
+  Lambda-list: (&optional, (input-stream-or-string, t),
+                (eof-error-p, t), eof-value, single-value-p)
+  Derived type: (function, (&optional, t, boolean, t, boolean),
+                 (values, t, &optional))
+  Documentation:
+    Read a JSON value. Reading is influenced by the dynamic variables
+    *read-default-true-value*, *read-default-false-value*, *read-default-null-value*,
+    *read-default-array-format*, *read-default-object-format*, *read-hash-table-test* and
+    common-lisp:*read-default-float-format* which each determine the default values
+    and formats used. The following arguments also control the behavior of the read.
+
+    * input-stream-or-string - a stream, a string or t. If t is passed then
+      *standard-input* is used.
+    * eof-error-p - if true signal eof with error, otherwise return eof-value.
+    * eof-value - value used if eof-error-p is nil.
+    * single-value-p - Check for trailing junk after read is complete.
+
+MOONLI-USER> *print-pretty* = nil
+#=> nil
+
+MOONLI-USER> with open-file(f, "~/ram-disk/sample.json"):
+  shasht:read-json(f)
+end
+#=> #<hash-table :TEST equal :COUNT 1 {12091262A3}>
+
+MOONLI-USER> alexandria:hash-table-alist(*)
+#=> (("glossary" . #<hash-table :TEST equal :COUNT 2 {1209126423}>))
+
 ```
 
 Enjoy :)
