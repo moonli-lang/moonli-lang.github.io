@@ -5,29 +5,122 @@ weight: 10
 menu: {main: {weight: 15}}
 ---
 
-## Method 1: Binaries - Best for checking out
+
+
+## Method 1: Binaries
+
+### With pixi (recommended)
+
+Install [pixi](https://pixi.prefix.dev/latest/installation/).
+
+Then, in the project directory:
+
+```sh
+## Create a pixi workspace
+pixi init
+
+## Add the common lisp channel
+pixi workspace channel add --prepend \
+  https://prefix.dev/conda-forge \
+  https://prefix.dev/common-lisp/common-lisp
+
+## Install moonli
+pixi add moonli
+
+## Run it
+pixi run moonli --version
+pixi run moonli --no-init --funcall + 2 3 4
+```
+
+You can start the REPL with
+
+```sh
+pixi run moonli
+```
+
+You can quit it by `uiop:quit()` then hitting `Ctrl+J`.
+
+<img src="/img/repl.png"></img>
+
+You can install common lisp packages from the prefix.dev channel: https://prefix.dev/channels/@common-lisp/common-lisp
+
+Optionally, you can also install the lisp package manager quicklisp with
+
+```sh
+pixi add ql-https
+```
+
+To install a package, you can
+
+```sh
+pixi run moonli --funcall ql:quickload osicat
+```
+
+Although, Moonli's [curated libraries](https://github.com/moonli-lang/moonli/blob/v0.0.11/moonli.asd#L114-L242) included with the binary should cover the common cases. So, ql-https should not be required.
+
+To run a script
+
+```sh
+pixi run moonli /path/to/script.moonli
+```
+
+If you have an asdf package in the current directory, then you can start moonli with the project
+
+
+
+Updating moonli will be as simple as
+
+```sh
+pixi upgrade moonli
+```
+
+### Without pixi (manual download)
 
 Grab a binary from the [latest
 release](https://github.com/digikar99/moonli/releases/latest). If you
 want an interactive REPL as in the above gif, grab the binaries with
 "repl" or "[ciel](https://ciel-lang.org/#/?id=ciel)" in their name.
 
-If you want to run a few moonli files, grab the regular binaries.
-
-However, the repl binaries depend on readline. This can be installed as
-follows:
-
-- Ubuntu: `sudo apt install libreadline-dev`
-- Mac OS: `brew link readline --force`
-- Windows: `pacman -S mingw-w64-x86_64-readline`
-
 In case of any installation issues, please create an issue on
 [github](https://github.com/digikar99/moonli/issues/new) or
 [gitlab](https://gitlab.com/digikar/moonli/-/issues/new?type=ISSUE).
 
-## Method 2: From fresh compilers - Best for serious development
+In this case, [quicklisp](https://github.com/rudolfochrist/ql-https/tree/1.0) will need to be installed manually and updating Moonli will also have to be manual.
 
-### Step 0. Install a package manager for your OS
+
+
+## Method 2: From fresh compilers - If you want to hack on Moonli
+
+### With pixi
+
+1. Install [pixi](https://pixi.prefix.dev/latest/installation/).
+
+   Windows users should also install [git for bash](https://git-scm.com/install/windows)
+
+2. Clone the repository and change directory:
+
+   ```sh
+   git clone https://github.com/moonli-lang/moonli && cd moonli
+   ```
+
+3. Use pixi:
+
+   ```sh
+   pixi run sbcl --no-userinit --eval '(asdf:load-system "moonli/repl")' --eval '(moonli/repl:main)'
+   ```
+
+   OR
+
+   ```sh
+   pixi -q run moonli-repl
+   ```
+
+You can use `pixi run sbcl` to use as the binary from other editors like Emacs or VS Code. Emacs has a [moonli-mode.el](https://github.com/moonli-lang/moonli-mode.el) and VS Code has [Alive Moonli](https://marketplace.visualstudio.com/items?itemName=moonli-lang.alive-moonli).
+
+
+### Without pixi
+
+#### Step 0. Install a package manager for your OS
 
 Mac OS: [brew](https://brew.sh/)
 
@@ -39,49 +132,7 @@ Windows:
   `pacman` package manager
 - Or [choco](https://chocolatey.org/install)
 
-### Step 1. Install a Common Lisp compiler and some tools
-
-- Ubuntu: `sudo apt install git sbcl`
-- Mac OS: `brew install git sbcl`
-- Windows:
-  - `pacman -S git mingw-w64-x86_64-sbcl`
-  - `choco install git sbcl`
-
-Once this step is successful, you should be able to type
-`sbcl --help` and see something similar to the following:
-
-    Usage: sbcl [runtime-options] [toplevel-options] [user-options]
-    Common runtime options:
-      --help                     Print this message and exit.
-      --version                  Print version information and exit.
-      --core <filename>          Use the specified core file instead of the default.
-      --dynamic-space-size <MiB> Size of reserved dynamic space in megabytes.
-      --control-stack-size <MiB> Size of reserved control stack in megabytes.
-      --tls-limit                Maximum number of thread-local symbols.
-
-    Common toplevel options:
-      --sysinit <filename>       System-wide init-file to use instead of default.
-      --userinit <filename>      Per-user init-file to use instead of default.
-      --no-sysinit               Inhibit processing of any system-wide init-file.
-      --no-userinit              Inhibit processing of any per-user init-file.
-      --disable-debugger         Invoke sb-ext:disable-debugger.
-      --noprint                  Run a Read-Eval Loop without printing results.
-      --script [<filename>]      Skip #! line, disable debugger, avoid verbosity.
-      --quit                     Exit with code 0 after option processing.
-      --non-interactive          Sets both --quit and --disable-debugger.
-    Common toplevel options that are processed in order:
-      --eval <form>              Form to eval when processing this option.
-      --load <filename>          File to load when processing this option.
-
-    User options are not processed by SBCL. All runtime options must
-    appear before toplevel options, and all toplevel options must
-    appear before user options.
-
-    For more information please refer to the SBCL User Manual, which
-    should be installed along with SBCL, and is also available from the
-    website <http://www.sbcl.org/>.
-
-### Step 2. Install ql-https {#2-install-ocicl}
+#### Step 2. Install ql-https {#2-install-ocicl}
 
 [ql-https](https://github.com/rudolfochrist/ql-https) sets up the Common Lisp library manager [quicklisp](https://www.quicklisp.org/beta/) with https support. It can be installed simply as:
 
@@ -92,13 +143,13 @@ curl https://raw.githubusercontent.com/rudolfochrist/ql-https/master/install.sh 
 
 This will also edit the compiler init file (eg. `~/.sbclrc`) to load ql-https at startup.
 
-### Step 3. Install Moonli
+#### Step 3. Install Moonli
 
-#### 3.1. Obtain the source
+##### 3.1. Obtain the source
 
     git clone https://github.com/moonli-lang/moonli
 
-#### 3.2. Start the REPL
+##### 3.2. Start the REPL
 
     sbcl --eval '(ql:quickload "moonli/repl")' --eval '(moonli/repl:main)'
 
@@ -106,7 +157,7 @@ Optionally, with [CIEL](https://ciel-lang.org/#/?id=ciel)
 
     sbcl --eval '(asdf:load-system "moonli/ciel")' --eval '(moonli/repl:main)'
 
-#### 3.3a. (Optional) Building basic binary
+##### 3.3a. (Optional) Building basic binary
 
 The following should create a `moonli` binary in the root
 directory of moonli.
@@ -122,14 +173,14 @@ directory of moonli.
       -t, --transpile-moonli ARG
                                  Transpile moonli file to lisp file
 
-#### 3.3b. (Optional) Build REPL
+##### 3.3b. (Optional) Build REPL
 
 The following should create a `moonli.repl` binary in
 the root directory of moonli.
 
     sbcl --eval '(asdf:make "moonli/repl")'
 
-#### 3.3c. (Optional) Build REPL with CIEL
+##### 3.3c. (Optional) Build REPL with CIEL
 
 The following should create a `moonli.ciel` binary in
 the root directory of moonli.
@@ -137,7 +188,7 @@ the root directory of moonli.
     sbcl --eval '(asdf:make "moonli/ciel")'
 
 
-### Step 4. Set up VS Code or Emacs
+#### Step 4. Set up VS Code or Emacs
 
 Install [VS Code](https://vscodium.com/) or [VSCodium](https://vscodium.com/) if they are not already installed.
 
