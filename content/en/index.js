@@ -2,22 +2,22 @@
     var RELEASE_BASE = "https://github.com/moonli-lang/moonli/releases/latest/download/";
 
     var MATRIX = {
-        "linux|x86_64|repl": "moonli-v0.0.11.repl.linux.x86_64.bin",
-        "linux|arm64|repl":  "moonli-v0.0.11.repl.linux.aarch64.bin",
-        "linux|x86_64|ciel": "moonli-v0.0.11.ciel.linux.x86_64.bin",
-        "linux|arm64|ciel":  "moonli-v0.0.11.ciel.linux.aarch64.bin",
-        "linux|x86_64|basic": "moonli-v0.0.11.linux.x86_64.bin",
-        "linux|arm64|basic":  "moonli-v0.0.11.linux.aarch64.bin",
+        "linux|x86_64|repl": "moonli-v0.0.12.repl.linux.x86_64.bin",
+        "linux|arm64|repl":  "moonli-v0.0.12.repl.linux.aarch64.bin",
+        "linux|x86_64|ciel": "moonli-v0.0.12.ciel.linux.x86_64.bin",
+        "linux|arm64|ciel":  "moonli-v0.0.12.ciel.linux.aarch64.bin",
+        "linux|x86_64|basic": "moonli-v0.0.12.linux.x86_64.bin",
+        "linux|arm64|basic":  "moonli-v0.0.12.linux.aarch64.bin",
 
-        "darwin|x86_64|repl": "moonli-v0.0.11.repl.darwin.x86_64.bin",
-        "darwin|arm64|repl":  "moonli-v0.0.11.repl.darwin.arm64.bin",
-        "darwin|x86_64|ciel": "moonli-v0.0.11.ciel.darwin.x86_64.bin",
-        "darwin|arm64|ciel":  "moonli-v0.0.11.ciel.darwin.arm64.bin",
-        "darwin|x86_64|basic": "moonli-v0.0.11.darwin.x86_64.bin",
-        "darwin|arm64|basic":  "moonli-v0.0.11.darwin.arm64.bin",
+        "darwin|x86_64|repl": "moonli-v0.0.12.repl.darwin.x86_64.bin",
+        "darwin|arm64|repl":  "moonli-v0.0.12.repl.darwin.arm64.bin",
+        "darwin|x86_64|ciel": "moonli-v0.0.12.ciel.darwin.x86_64.bin",
+        "darwin|arm64|ciel":  "moonli-v0.0.12.ciel.darwin.arm64.bin",
+        "darwin|x86_64|basic": "moonli-v0.0.12.darwin.x86_64.bin",
+        "darwin|arm64|basic":  "moonli-v0.0.12.darwin.arm64.bin",
 
-        "windows|x86_64|repl":  "moonli-v0.0.11.repl.windows.x86_64.exe",
-        "windows|x86_64|basic": "moonli-v0.0.11.windows.x86_64.exe",
+        "windows|x86_64|repl":  "moonli-v0.0.12.repl.windows.x86_64.exe",
+        "windows|x86_64|basic": "moonli-v0.0.12.windows.x86_64.exe",
 
         // Not available
         // "windows|x86_64|ciel": "moonli-windows-x86_64.lisp"
